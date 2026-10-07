@@ -1,0 +1,57 @@
+[
+  {
+    "name": "brand",
+    "url": "https://cdn.vsassets.io/ext/ms.vss-tfs-web/platform-content/ADO.C1K4lP.svg",
+    "file": "brand.svg"
+  },
+  {
+    "name": "overview",
+    "url": "https://cdn.vsassets.io/ext/ms.vss-tfs-web/platform-content/Overview.Hg4vKT.svg",
+    "file": "overview.svg"
+  },
+  {
+    "name": "boards",
+    "url": "https://cdn.vsassets.io/ext/ms.vss-work-web/common-content/Content/Plan.Gfto6L.svg",
+    "file": "boards.svg"
+  },
+  {
+    "name": "repos",
+    "url": "https://cdn.vsassets.io/ext/ms.vss-code-web/common-content/Repo.TyuQQr.svg",
+    "file": "repos.svg"
+  },
+  {
+    "name": "pipelines",
+    "url": "https://cdn.vsassets.io/ext/ms.vss-build-web/common-library/Launch.ZoHcfU.svg",
+    "file": "pipelines.svg"
+  },
+  {
+    "name": "test-plans",
+    "url": "https://cdn.vsassets.io/ext/ms.vss-test-web/common-content/Test.tJF4ss.svg",
+    "file": "test-plans.svg"
+  },
+  {
+    "name": "artifacts",
+    "url": "https://ms.gallerycdn.vsassets.io/extensions/ms/azure-artifacts/20.279.0.1598083176/1788974405705/root/img/Artifacts.svg",
+    "file": "artifacts.svg"
+  },
+  {
+    "name": "compliance",
+    "url": "https://cdn.vsassets.io/ext/ms.vss-tfs-web/platform-content/Compliance.23CEVu.png",
+    "file": "compliance.png"
+  },
+  {
+    "name": "agency",
+    "url": "https://ms-1es.gallerycdn.vsassets.io/extensions/ms-1es/agency/3.0.42/1790633397388/img/Agency_256.png",
+    "file": "agency.png"
+  },
+  {
+    "name": "start-right",
+    "url": "https://ms-1es.gallerycdn.vsassets.io/extensions/ms-1es/startright/1.2.24/1790809404167/img/navigation-icon.png",
+    "file": "start-right.png"
+  },
+  {
+    "name": "assistant",
+    "url": "https://ms-msd-devxp.gallerycdn.vsassets.io/extensions/ms-msd-devxp/adoaichat/1.0.145/1791277529474/common/assets/ic_devops_ado_hub_120.png",
+    "file": "assistant.png"
+  }
+]

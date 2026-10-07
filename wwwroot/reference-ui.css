@@ -1,0 +1,145 @@
+/* Layout measurements use the original pages at 100% browser zoom. */
+.work-card .card-tags{display:flex;flex-wrap:wrap;align-items:flex-start;gap:0;list-style:none;padding:0;margin:8px 0 12px;width:100%;min-width:0;font:12px/16px "Segoe UI",sans-serif}
+.work-card .card-tags>li{flex:0 1 auto;min-width:0;max-width:calc(100% - 8px);height:26px;padding:2px 0;margin:0 8px 8px 0}
+.work-card .card-tag{display:block;max-width:100%;height:22px;border:1px solid transparent;border-radius:120px;background:#deecf9;color:#333;padding:2px 8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:16px}
+.azure-shell:is([data-page=board],[data-page=backlog],[data-page=queries]) main{padding:0 32px;background:#f8f8f8;height:calc(100vh - 48px - var(--notice));min-height:0;overflow:hidden}
+.azure-shell:is([data-page=board],[data-page=backlog],[data-page=queries]) .page-heading{display:none}
+.azure-shell:is([data-page=board],[data-page=backlog],[data-page=queries]) #page-content{height:100%;min-height:0;display:flex;flex-direction:column}
+.azure-shell[data-page=queries] #page-content:has(#query-editor-form){display:block;overflow:auto}
+.azure-shell:is([data-page=board],[data-page=backlog]) #page-content>.analytics-card{overflow:auto;min-height:0}
+.reference-team-header{flex:none}
+.reference-team-header .team-toolbar{height:72px;min-height:72px;margin:0;flex-wrap:nowrap}
+.reference-team-header .team-toolbar select{font-size:20px;max-width:300px}
+.reference-team-header .team-toolbar .commands{gap:8px}
+.reference-team-header .commands .button,.reference-query-heading .button{background:#eaeaea;color:#201f1e;min-height:32px;font-size:13px;padding:6px 12px}
+.reference-team-header .commands .button.primary,.reference-query-heading .button.primary{background:#0078d4;color:#fff}
+.reference-team-header .commands .button.primary .ui-icon,.reference-query-heading .button.primary .ui-icon{color:inherit}
+.reference-team-navigation{display:flex;align-items:center;justify-content:space-between;min-height:48px}
+.reference-team-navigation .ado-tabs{margin:0;border:0;align-self:stretch;align-items:center}
+.reference-team-navigation .ado-tabs .button{color:#201f1e;font-size:14px;padding:10px 0}
+.reference-view-tools{display:flex;align-items:center;gap:12px}
+.reference-view-tools select{border:0;background:transparent;max-width:200px}
+.reference-view-tools .button{padding:6px;min-width:32px;color:#333}
+.reference-team-header .filterbar{margin:0 0 12px}
+.reference-team-header [hidden]{display:none!important}
+.reference-team-header .backlog-options{padding:10px;background:#eee;margin-bottom:12px}
+.azure-shell[data-page=board] .ado-board-scroll{flex:1;min-height:0;max-height:none;margin:0 -32px 0 -16px;padding:0 16px 0 0}
+.azure-shell[data-page=board] .ado-board{gap:4px}
+.azure-shell[data-page=board] .ado-column{width:220px;min-width:220px;border:0;border-radius:0;background:#f1f1f1}
+.azure-shell[data-page=board] .ado-column.split-column{width:440px;min-width:440px}
+.azure-shell[data-page=board] .ado-column:not(:first-child) .quick-add{order:1;opacity:0}
+.azure-shell[data-page=board] .ado-column:is(:hover,:focus-within) .quick-add{opacity:1}
+.azure-shell[data-page=board] .ado-column:not(:first-child) .work-card{flex-shrink:0}
+.azure-shell[data-page=board] .ado-column-heading{min-height:50px;padding:12px 8px}
+.azure-shell[data-page=board] .ado-subcolumn{padding:8px}
+.azure-shell[data-page=board] .work-card{width:100%;padding:12px;border:1px solid #ccc;border-left-width:4px;border-radius:3px;margin:0 0 12px;box-shadow:0 3.2px 7.2px #00000022,0 .6px 1.8px #0000001c}
+.azure-shell[data-page=board] .work-card.pbi{border-left-color:#009ccc}
+.azure-shell[data-page=board] .work-card.task{border-left-color:#f2cb1d}
+.azure-shell[data-page=board] .work-card.bug{border-left-color:#e52d50}
+.azure-shell[data-page=board] .work-card:is(.feature,.epic){border-left-color:#773b93}
+.azure-shell[data-page=board] .card-top:empty{display:none}
+.azure-shell[data-page=board] .card-title{display:block;font:400 12px/16px "Segoe UI",sans-serif;margin:0;padding:0;color:#333;overflow-wrap:anywhere}
+.azure-shell[data-page=board] .card-title .type-icon{display:inline-flex;width:14px;height:16px;vertical-align:top;margin-right:8px}
+.azure-shell[data-page=board] .card-id{font-weight:600;margin-right:8px}
+.azure-shell[data-page=board] .card-state{min-height:22px;line-height:16px;margin:6px 0 0;font-size:12px}
+.azure-shell[data-page=board] .card-bottom{height:32px;margin:0;font-size:12px;gap:4px}
+.azure-shell[data-page=board] .person{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.azure-shell[data-page=board] .avatar{width:20px;height:20px;font-size:9px;flex-shrink:0}
+.azure-shell[data-page=board] .tags{display:flex;flex-wrap:wrap;max-width:100%;gap:4px}
+.azure-shell[data-page=board] .tag{max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.azure-shell[data-page=backlog] .backlog-layout{flex:1;min-height:0;padding-top:12px;gap:16px}
+.backlog-layout.planning-hidden{grid-template-columns:minmax(0,1fr)}
+.backlog-layout.planning-hidden .planning-pane{display:none}
+.azure-shell[data-page=backlog] .table-wrap{background:white;overflow:auto;border:1px solid #e5e5e5;box-shadow:0 1px 3px #0000001a}
+.azure-shell[data-page=backlog] .backlog-table{table-layout:fixed;min-width:1000px;width:100%}
+.azure-shell[data-page=backlog] .backlog-table th{position:sticky;top:0;z-index:2;background:white;height:40px;font-size:12px}
+.azure-shell[data-page=backlog] .backlog-table td{height:36px;padding:4px 8px;font-size:12px;border-bottom:1px solid #eee}
+.azure-shell[data-page=backlog] .backlog-table .button{min-height:24px;height:24px;padding:2px 4px}
+.azure-shell[data-page=backlog] .backlog-table td{border-bottom:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.backlog-table [data-column=order]{width:115px}
+.backlog-table [data-column=type]{width:120px}
+.backlog-table [data-column=state]{width:130px}
+.backlog-table [data-column=estimate]{width:60px}
+.backlog-table [data-column=iteration]{width:200px}
+.backlog-table [data-column=actions]{width:36px}
+.backlog-tree-controls{display:inline-flex;vertical-align:middle;margin-right:8px}
+.backlog-tree-controls .button{padding:2px;min-height:24px;min-width:24px}
+.backlog-tree-controls .ui-icon{width:14px;height:14px}
+.backlog-table .rank-cell .button{visibility:hidden}
+.backlog-table tr:is(:hover,:focus-within) .rank-cell .button{visibility:visible}
+.azure-shell[data-page=backlog] .backlog-table .item-title{display:flex;align-items:center;gap:6px;max-width:100%;min-width:0;color:#333}
+.backlog-table .item-title>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.backlog-table .item-title .type-icon{flex-shrink:0}
+.reference-query-header{flex:none}
+.reference-query-heading{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
+.reference-query-heading h1{font-size:20px;font-weight:400;margin:0}
+.reference-query-heading .query-commandbar{margin:0;gap:8px}
+.reference-query-navigation{height:54px;display:flex;align-items:center;justify-content:space-between}
+.reference-query-navigation .ado-tabs{border:0;margin:0}
+.reference-query-search{display:flex;align-items:center;border:1px solid #aaa;width:280px;height:32px;padding-left:8px;gap:8px;background:white}
+.reference-query-search input{width:100%;min-width:0;border:0;background:transparent;padding:4px;font-size:12px;outline:0}
+.reference-query-search:focus-within{outline:1px solid #0078d4;border-color:#0078d4}
+.reference-query-search .button{padding:3px;min-height:28px;color:#777}
+.reference-query-table{flex:1;min-height:0;overflow:auto;background:white;border:1px solid #e5e5e5;box-shadow:0 1px 3px #0000001a}
+.reference-query-tablehead{position:sticky;top:0;z-index:2;background:#fff;display:grid;grid-template-columns:65% 35%;height:44px;align-items:center;padding:0 24px;border-bottom:1px solid #eee;font-size:12px;color:#666}
+.reference-query-row{display:flex;align-items:center;min-height:45px;border-bottom:1px solid #eee;gap:8px;padding:0 24px;list-style:none;font-size:13px}
+summary.reference-query-row{cursor:pointer}
+.reference-query-row::-webkit-details-marker{display:none}
+.reference-query-row:hover{background:#f5f5f5}
+.reference-query-folder{margin-left:0}
+.reference-query-root>summary>.ui-icon:nth-child(2),.reference-query-folder>summary>.ui-icon:nth-child(2){color:#b59b59}
+.reference-query-root:not([open])>summary>.ui-icon:first-child,.reference-query-folder:not([open])>summary>.ui-icon:first-child{transform:rotate(-90deg)}
+.reference-query-name{display:flex;align-items:center;gap:8px;min-width:0;width:65%;padding-left:0}
+.query-depth-1>.reference-query-name{padding-left:20px}
+.query-depth-2>.reference-query-name{padding-left:40px}
+.query-depth-3>.reference-query-name{padding-left:60px}
+.query-depth-4>.reference-query-name{padding-left:80px}
+.query-depth-5>.reference-query-name{padding-left:100px}
+.reference-query-name>.ui-icon{flex:none;color:#555}
+summary .reference-query-name>.ui-icon:nth-child(2){fill:#dfb773;color:#dfb773;width:13px}
+.reference-query-folder:not([open])>summary .ui-icon:first-child,.reference-query-root:not([open])>summary .ui-icon:first-child{transform:rotate(-90deg)}
+.query-history-unknown{color:#888;font-size:12px}
+.query-modified-date{font-size:12px}
+.reference-query-owner>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.reference-query-name .favorite{opacity:0;flex:none}
+.reference-query-row:is(:hover,:focus-within) .favorite,.reference-query-name .favorite[aria-pressed=true]{opacity:1}
+.query-row-menu>div{min-width:190px}
+.query-row-menu .button{display:flex;align-items:center;gap:10px;text-align:left;width:100%;color:#333}
+.query-editor-heading .commands .button{display:inline-flex;align-items:center;gap:8px;font-size:13px}
+.query-editor-heading .commands .primary{color:white}
+.query-editor-heading .commands .primary .ui-icon{color:inherit}
+.query-grid-labels{grid-template-columns:1fr 160px 1.4fr 30px;gap:10px;margin:0 10px 0 25px;padding:12px 0}
+.reference-query-name .query-title-link{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.reference-query-owner{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.reference-query-owner .avatar{height:24px;width:24px;font-size:10px;flex-shrink:0}
+.reference-query-owner .query-row-menu{margin-left:auto}
+.reference-query-owner .query-row-menu>summary{padding:4px;cursor:pointer;list-style:none}
+.reference-query-empty{font-size:12px;color:#777;padding:0 48px}
+.reference-capacity-actions{display:flex;align-items:center;gap:8px}
+.reference-capacity-actions .button{display:inline-flex;gap:8px;align-items:center;border-radius:2px}
+.reference-capacity-actions .button:disabled{opacity:1;background:#eee;color:#999;border-color:transparent}
+.reference-capacity-workdays{margin:0}
+.reference-capacity-workdays>p{font-size:12px;color:#666}
+.azure-shell[data-page=sprints] .ado-capacity{background:#fff;border:1px solid #eee;box-shadow:0 1px 4px #0000001a;padding:0 16px;flex:1}
+.ado-capacity .capacity-sheet{border:0;padding:16px 4px 20px}
+.reference-query-header .button,.reference-team-header .commands .button{display:inline-flex;align-items:center;gap:8px;border-radius:2px}
+@media(max-width:760px){
+ .azure-shell:is([data-page=board],[data-page=backlog],[data-page=queries]) main{padding:0 12px}
+ .reference-team-header .team-toolbar{height:auto;min-height:72px;flex-wrap:wrap;padding:10px 0}
+ .reference-team-header .team-toolbar select{font-size:16px;max-width:200px}
+ .reference-team-header .team-toolbar>.commands{max-width:100%;width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}
+ .azure-shell[data-page=backlog] .backlog-layout{display:flex;flex-direction:column}
+ .azure-shell[data-page=backlog] .table-wrap{flex:1;min-height:0}
+ .azure-shell[data-page=backlog] .planning-pane{max-height:160px;flex:none}
+ .reference-team-navigation{gap:8px;flex-wrap:wrap}
+ .reference-view-tools{margin-left:auto;gap:4px}
+ .azure-shell[data-page=board] .ado-board-scroll{margin:0 -12px}
+ .reference-query-heading{height:auto;min-height:80px;flex-wrap:wrap;padding:12px 0}
+ .reference-query-heading .query-commandbar{flex-wrap:wrap}
+ .reference-query-search{width:180px}
+ .reference-query-row{padding:0 10px}
+ .reference-query-name{padding-left:0;width:60%}
+ .reference-query-owner .avatar{display:none}
+ .reference-query-owner>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .reference-capacity-actions{gap:4px}
+}

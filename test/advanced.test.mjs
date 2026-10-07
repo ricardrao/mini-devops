@@ -1,0 +1,81 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {start,client} from './helpers.mjs';
+
+test('advanced queries and delivery plans enforce scope, graph semantics and revisions',async t=>{
+  const server=await start();t.after(()=>server.stop());
+  const admin=client(server.base),reader=client(server.base),editor=client(server.base),password='Advanced-test-password-2026';
+  await admin.request('/setup','POST',{name:'Admin',login:'admin',password});
+  const p1=(await admin.request('/projects'))[0].id,p2=(await admin.request('/projects','POST',{name:'Other project'})).id;
+  const b1=`/projects/${p1}`,b2=`/projects/${p2}`;
+  const uid=(await admin.request('/users','POST',{login:'reader',name:'Reader',password})).id,eid=(await admin.request('/users','POST',{login:'editor',name:'Editor',password})).id;
+  await admin.request(b1+'/members','POST',{user_id:uid,role:'reader'});await admin.request(b1+'/members','POST',{user_id:eid,role:'editor'});
+  await reader.request('/login','POST',{login:'reader',password});await editor.request('/login','POST',{login:'editor',password});
+  const create=(base,title,type,parent_id)=>admin.request(base+'/items','POST',{title,type,parent_id});
+  const root=await create(b1,'Top feature','Feature'),middle=await create(b1,'Context parent','Product Backlog Item',root.id),leaf=await create(b1,'Matching child','Task',middle.id),isolated=await create(b1,'Unlinked task','Task'),foreign=await create(b2,'Private item','Task');
+  const clauses=(field,op,value)=>({group:'AND',rules:[{field,op,value:String(value)}]});
+  const run=(who,filters)=>who.request(b1+'/query-run','POST',{filters:JSON.stringify(filters)});
+  await t.test('tree preserves nonmatching ancestors and saves its target filters',async()=>{
+    const f={query_type:'tree',clauses:clauses('id','=',root.id),target_clauses:clauses('title','contains','Matching')};
+    const result=await run(admin,f);assert.deepEqual(result.rows.map(r=>[r.id,r.depth,r.context]),[[root.id,0,false],[middle.id,1,true],[leaf.id,2,false]]);
+    const q=await admin.request(b1+'/queries','POST',{name:'Tree query',shared:1,folder:'',filters:JSON.stringify(f)});
+    assert.deepEqual((await reader.request(b1+`/queries/${q.id}/run`)).rows,result.rows);
+  });
+  let linkId;
+  await t.test('direct links: forward/reverse, must/may/not and cross-project cycles',async()=>{
+    linkId=(await admin.request(`/items/${leaf.id}/links`,'POST',{kind:'successor',target_id:foreign.id,version:leaf.version})).id;
+    const f={query_type:'links',across_projects:true,link_kind:'dependency',link_direction:'forward',clauses:clauses('id','=',leaf.id)};
+    assert.deepEqual((await run(admin,f)).rows.map(r=>r.id),[leaf.id,foreign.id]);
+    assert.deepEqual((await run(admin,{...f,link_direction:'reverse',clauses:clauses('id','=',foreign.id)})).rows.map(r=>r.id),[foreign.id,leaf.id]);
+    assert.equal((await run(admin,{...f,target_clauses:clauses('id','=',isolated.id)})).total,0);
+    assert.deepEqual((await run(admin,{...f,link_mode:'may',target_clauses:clauses('id','=',isolated.id)})).rows.map(r=>r.id),[leaf.id]);
+    assert.equal((await run(admin,{...f,link_mode:'not'})).total,0);
+    assert.equal((await run(admin,{...f,link_mode:'not',clauses:clauses('id','=',isolated.id)})).total,1);
+    const revision=(await admin.request(`/items/${foreign.id}`)).item.version;
+    await admin.request(`/items/${foreign.id}/links`,'POST',{kind:'successor',target_id:leaf.id,version:revision},{status:400});
+    assert.equal((await run(admin,{query_type:'links',link_kind:'parent',link_direction:'forward',clauses:clauses('id','=',root.id)})).rows[1].id,middle.id);
+  });
+  await t.test('cross-project queries and links cannot expose inaccessible projects',async()=>{
+    const f={view:'all',include_completed:'true',across_projects:true,clauses:clauses('type','=','Task')};
+    assert.ok((await run(admin,f)).items.some(i=>i.id===foreign.id));
+    assert.ok(!(await run(reader,f)).items.some(i=>i.id===foreign.id));
+    assert.equal((await run(reader,{...f,query_type:'links',link_kind:'dependency'})).total,0);
+    assert.equal((await reader.request(`/items/${leaf.id}`)).links.length,0);
+    await reader.request(b1+'/query-run','POST',{filters:JSON.stringify({...f,project_ids:[p2]})},{status:404});
+    for(const project_ids of ['invalid',['wrong'],[null],[-1]])await admin.request(b1+'/query-run','POST',{filters:JSON.stringify({...f,project_ids})},{status:400});
+    const q=await admin.request(b1+'/queries','POST',{name:'Accessible projects',shared:1,folder:'',filters:JSON.stringify(f)});
+    assert.ok(!(await reader.request(b1+`/queries/${q.id}/run`)).items.some(i=>i.id===foreign.id));
+    await admin.request(b2+'/members','POST',{user_id:uid,role:'reader'});
+    assert.ok((await reader.request(b1+`/queries/${q.id}/run`)).items.some(i=>i.id===foreign.id));
+    await admin.request(b2+`/members/${uid}`,'DELETE',{});
+    assert.ok(!(await reader.request(b1+`/queries/${q.id}/run`)).items.some(i=>i.id===foreign.id));
+    const v=(await editor.request(`/items/${leaf.id}`)).item.version;
+    await editor.request(`/items/${leaf.id}/links/${linkId}`,'DELETE',{version:v},{status:404});
+    assert.equal((await admin.request(`/items/${leaf.id}`)).links.length,1);
+  });
+  await t.test('multi-project/team plans preserve configuration and limit rows by current ACL',async()=>{
+    const t1=(await admin.request(b1)).teams[0].id,t2=(await admin.request(b2)).teams[0].id;
+    const s1=await admin.request(b1+'/iterations','POST',{name:'Week A',start_date:'2026-10-04',end_date:'2026-10-10'}),s2=await admin.request(b2+'/iterations','POST',{name:'Week B',start_date:'2026-10-11',end_date:'2026-10-17'});
+    for(const [item,sprint]of[[leaf,s1],[foreign,s2]]){const v=(await admin.request(`/items/${item.id}`)).item.version;await admin.request(`/items/${item.id}`,'PATCH',{version:v,iteration_id:sprint.id});}
+    const rows=[{project_id:p1,team_id:t1,level:'tasks'},{project_id:p2,team_id:t2,level:'tasks'}],data={name:'Release plan',description:'Cross-project delivery',rows};
+    const plan=await admin.request(b1+'/delivery-plans','POST',data),path=b1+`/delivery-plans/${plan.id}`,window='?start=2026-10-04&end=2026-10-31';
+    let result=await admin.request(path+window);assert.equal(result.rows.length,2);assert.equal(result.dependencies.length,1);assert.ok(result.rows[0].items.some(i=>i.id===isolated.id));
+    const restricted=await reader.request(path+window);assert.equal(restricted.rows.length,1);assert.equal(restricted.restricted,true);assert.equal(restricted.can_edit,false);assert.equal(restricted.dependencies.length,0);
+    assert.equal(JSON.stringify(restricted).includes('Private item'),false);
+    await reader.request(path,'PATCH',{...data,version:1},{status:403});
+    await admin.request(path,'PATCH',{...data,name:'Renamed plan',version:1});
+    await admin.request(path,'PATCH',{...data,version:1},{status:409});
+    result=await admin.request(path+window);assert.equal(result.name,'Renamed plan');assert.equal(result.version,2);
+    await admin.request(path+'?start=invalid','GET',undefined,{status:400});
+    await admin.request(path+'?start=2026-01-01&end=2027-01-01','GET',undefined,{status:400});
+    await admin.request(b1+'/delivery-plans','POST',{...data,rows:[rows[0],rows[0]]},{status:400});
+    const item=(await admin.request(`/items/${leaf.id}`)).item;
+    await admin.request(`/items/${leaf.id}`,'PATCH',{version:item.version,iteration_id:s2.id},{status:400});
+    await reader.request(`/items/${leaf.id}`,'PATCH',{version:item.version,iteration_id:null},{status:403});
+    await admin.request(`/items/${leaf.id}`,'PATCH',{version:item.version,iteration_id:null});
+    await admin.request(`/items/${leaf.id}`,'PATCH',{version:item.version,iteration_id:s1.id},{status:409});
+    assert.equal((await admin.request(path+window)).dependencies.length,0);
+    await admin.request(path,'DELETE',{version:1},{status:409});await admin.request(path,'DELETE',{version:2});
+    assert.equal((await admin.request(b1+'/delivery-plans')).length,0);assert.ok((await admin.request(`/items/${leaf.id}`)).item);
+  });
+});

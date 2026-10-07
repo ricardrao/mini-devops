@@ -1,0 +1,70 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { DatabaseSync } from 'node:sqlite';
+import { mkdtempSync } from 'node:fs';
+import { randomBytes, pbkdf2Sync, createHash } from 'node:crypto';
+import os from 'node:os';
+import path from 'node:path';
+import { start, client } from './helpers.mjs';
+
+test('v1 upgrade preserves records, legacy states and sessions; restart is idempotent', async t => {
+  const directory = mkdtempSync(path.join(os.tmpdir(), 'mini-devops-migration-'));
+  const file = path.join(directory, 'devops.db');
+  const db = new DatabaseSync(file);
+  // Fixed v1 fixture, independent of the current migration implementation.
+  db.exec(`
+    CREATE TABLE devops_schema(version INTEGER NOT NULL); INSERT INTO devops_schema VALUES(1);
+    CREATE TABLE users(id INTEGER PRIMARY KEY AUTOINCREMENT,login VARCHAR(100) NOT NULL UNIQUE,name VARCHAR(100) NOT NULL,password VARCHAR(300) NOT NULL,admin INTEGER NOT NULL DEFAULT 0);
+    CREATE TABLE sessions(token VARCHAR(64) PRIMARY KEY,user_id BIGINT NOT NULL,csrf VARCHAR(100) NOT NULL,expires VARCHAR(40) NOT NULL);
+    CREATE TABLE projects(id INTEGER PRIMARY KEY AUTOINCREMENT,name VARCHAR(100) NOT NULL UNIQUE,description TEXT NOT NULL,created VARCHAR(40) NOT NULL);
+    CREATE TABLE members(project_id BIGINT NOT NULL,user_id BIGINT NOT NULL,role VARCHAR(20) NOT NULL,PRIMARY KEY(project_id,user_id));
+    CREATE TABLE iterations(id INTEGER PRIMARY KEY AUTOINCREMENT,project_id BIGINT NOT NULL,name VARCHAR(100) NOT NULL,start_date VARCHAR(10) NOT NULL,end_date VARCHAR(10) NOT NULL,UNIQUE(project_id,name));
+    CREATE TABLE items(id INTEGER PRIMARY KEY AUTOINCREMENT,project_id BIGINT NOT NULL,title VARCHAR(300) NOT NULL,type VARCHAR(40) NOT NULL,state VARCHAR(40) NOT NULL,assignee_id BIGINT NULL,priority INTEGER NOT NULL,area VARCHAR(200) NOT NULL,tags VARCHAR(1000) NOT NULL,description TEXT NOT NULL,acceptance TEXT NOT NULL,estimate INTEGER NOT NULL DEFAULT 0,iteration_id BIGINT NULL,parent_id BIGINT NULL,created_by BIGINT NOT NULL,created VARCHAR(40) NOT NULL,changed VARCHAR(40) NOT NULL,version INTEGER NOT NULL DEFAULT 1,deleted INTEGER NOT NULL DEFAULT 0);
+    CREATE TABLE comments(id INTEGER PRIMARY KEY AUTOINCREMENT,item_id BIGINT NOT NULL,user_id BIGINT NOT NULL,body TEXT NOT NULL,created VARCHAR(40) NOT NULL);
+    CREATE TABLE history(id INTEGER PRIMARY KEY AUTOINCREMENT,item_id BIGINT NOT NULL,user_id BIGINT NOT NULL,body TEXT NOT NULL,created VARCHAR(40) NOT NULL);
+    CREATE TABLE queries(id INTEGER PRIMARY KEY AUTOINCREMENT,project_id BIGINT NOT NULL,user_id BIGINT NOT NULL,name VARCHAR(100) NOT NULL,filters TEXT NOT NULL);
+    INSERT INTO projects VALUES(7,'Legacy project','Preserve me','2026-01-01T00:00:00Z');
+    INSERT INTO members VALUES(7,11,'editor');
+    INSERT INTO iterations VALUES(9,7,'Legacy sprint','2026-01-01','2026-01-14');
+    INSERT INTO items VALUES(42,7,'Legacy item','Product Backlog Item','Resolved',11,2,'Legacy\\Team','Keep; Tags','Original description','Original acceptance',8,9,NULL,11,'2026-01-02T00:00:00Z','2026-01-03T00:00:00Z',6,0);
+    INSERT INTO comments VALUES(3,42,11,'Original comment','2026-01-03T00:00:00Z');
+    INSERT INTO history VALUES(4,42,11,'Original history','2026-01-03T00:00:00Z');
+    INSERT INTO queries VALUES(5,7,11,'Legacy query','{"state":"Resolved"}');
+  `);
+  const password = 'Migration-test-password-2026', salt = randomBytes(16), token = 'legacy-session-token';
+  db.prepare('INSERT INTO users VALUES(11,?,?,?,1)').run('legacy', 'Legacy User', salt.toString('base64') + ':' + pbkdf2Sync(password,salt,210000,32,'sha256').toString('base64'));
+  db.prepare('INSERT INTO sessions VALUES(?,11,?,?)').run(createHash('sha256').update(token).digest('hex').toUpperCase(),'legacy-csrf',new Date(Date.now()+3600000).toISOString());
+  const tables = ['users','sessions','projects','members','iterations','items','comments','history','queries'];
+  const old = Object.fromEntries(tables.map(table => [table, db.prepare(`SELECT * FROM ${table}`).all()]));
+  db.close();
+  let server = await start({directory}); t.after(async()=>server.stop());
+  const response = await fetch(server.base+'/api/items/42',{headers:{Cookie:'devops_session='+token}});
+  assert.equal(response.status,200);
+  const detail = await response.json(); assert.equal(detail.item.state,'Resolved'); assert.equal(detail.item.version,6);
+  assert.equal(detail.comments[0].body,'Original comment');
+  await server.stop();
+  let upgraded = new DatabaseSync(file);
+  for (const table of tables) {
+    const columns = Object.keys(old[table][0]);
+    assert.deepEqual(upgraded.prepare(`SELECT ${columns.join(',')} FROM ${table}`).all(),old[table],table+' existing values unchanged');
+  }
+  assert.equal(upgraded.prepare('SELECT version FROM devops_schema').get().version,5);
+  assert.equal(upgraded.prepare('SELECT changed FROM queries WHERE id=5').get().changed,null);
+  assert.equal(upgraded.prepare('SELECT COUNT(*) n FROM teams').get().n,1);
+  assert.equal(upgraded.prepare('SELECT COUNT(*) n FROM item_revisions').get().n,1);
+  upgraded.close();
+  server = await start({directory});
+  const user = client(server.base); await user.request('/login','POST',{login:'legacy',password});
+  const metadata = await user.request('/projects/7'); assert.equal(metadata.teams.length,1);assert.equal(metadata.queries[0].id,5);
+  assert.equal(metadata.queries[0].changed_by,null);
+  await user.request('/projects/7/queries/5','PATCH',{name:'Legacy query edited',filters:'{"state":"Resolved"}',shared:0,folder:'',version:1});
+  const changedQuery=(await user.request('/projects/7')).queries[0];
+  assert.equal(changedQuery.changed_by,11);assert.equal(changedQuery.changed_by_name,'Legacy User');assert.ok(Date.parse(changedQuery.changed));
+  const saved = await user.request('/items/42','PATCH',{...detail.item,title:'Legacy item edited'});
+  assert.equal(saved.state,'Resolved'); assert.equal(saved.version,7);
+  await server.stop();
+  upgraded = new DatabaseSync(file);
+  assert.equal(upgraded.prepare('SELECT COUNT(*) n FROM teams').get().n,1);
+  assert.equal(upgraded.prepare('SELECT COUNT(*) n FROM item_revisions').get().n,2);
+  upgraded.close();
+});

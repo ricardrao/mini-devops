@@ -1,0 +1,54 @@
+.team-board-picker{position:relative;display:inline-flex;max-width:100%}
+.team-board-trigger.button{gap:12px;font-size:20px;font-weight:600;min-height:40px;padding:4px 10px;max-width:360px}
+.team-board-trigger>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.team-board-trigger.button .ui-icon{color:#201f1e}
+.team-board-trigger[aria-expanded=true]{background:#d0d0d0}
+.team-board-menu{position:absolute;top:calc(100% + 2px);left:0;width:480px;max-width:calc(100vw - 90px);background:#fff;color:#201f1e;border-radius:4px;box-shadow:0 6px 18px #0003;z-index:70;font-size:14px;font-weight:400;display:flex;flex-direction:column;max-height:min(360px,calc(100vh - 190px))}
+.team-board-search{display:flex;align-items:center;gap:8px;padding:0 12px;margin:8px;border:1px solid #a19f9d;background:#fafafa;min-height:32px;flex-shrink:0}
+.team-board-search:focus-within{outline:2px solid #0078d4;outline-offset:-1px}
+.team-board-search input{width:100%;padding:4px 0;border:0;background:transparent;outline:none;font-size:14px;min-height:30px}
+.team-board-search input:focus{outline:none}
+.team-board-options{overflow:auto;min-height:0;border-top:1px solid #eee;flex:1}
+.team-board-options h3{font-size:14px;font-weight:600;margin:0;padding:0 26px;line-height:25px}
+.team-board-option{display:flex;align-items:center;position:relative;min-height:48px}
+.team-board-option:hover,.team-board-option:focus-within{background:#f3f2f1}
+.team-board-option:has([aria-selected=true]){background:#deecf9}
+.team-board-option>a{display:flex;align-items:center;gap:8px;min-height:48px;min-width:0;flex:1;color:#201f1e;padding:8px 4px 8px 8px;font-size:14px}
+.team-board-option>a>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.team-board-check{width:12px;flex:none;display:inline-flex}
+.team-board-check .ui-icon{width:12px}
+.team-board-star.button{padding:4px;min-width:28px;min-height:28px;margin-right:12px;opacity:0}
+.team-board-option:hover .team-board-star,.team-board-option:focus-within .team-board-star,.team-board-star[aria-pressed=true]{opacity:1}
+.team-board-star.button .ui-icon{color:#a66d1d}
+.team-board-star[aria-pressed=true] .ui-icon{fill:#d99c27}
+.team-board-directory-link{padding:16px 20px;min-height:48px;font-size:14px;font-weight:600;color:#201f1e;border-top:1px solid #eee;flex-shrink:0}
+.team-board-directory-link:hover{background:#f3f2f1}
+.team-board-empty{padding:12px 26px;color:#666;font-size:14px}
+.azure-shell[data-page=boards-directory] main>.page-heading{display:none}
+.azure-shell[data-page=boards-directory] main{background:#f8f8f8;min-height:calc(100vh - 48px - var(--notice))}
+.team-directory-toolbar{display:flex;align-items:center;justify-content:space-between;padding:16px 12px 24px}
+.team-directory-toolbar h1{font-size:20px;font-weight:600}
+.team-directory-wrap{background:#fff;border:1px solid #e5e5e5;border-radius:4px;box-shadow:0 2px 4px #0002;overflow:auto;margin:0 12px 24px}
+.team-directory-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px}
+.team-directory-table th,.team-directory-table td{height:40px;padding:4px 16px;border-bottom:1px solid #eaeaea;text-align:left;font-weight:400}
+.team-directory-table thead th{height:44px;font-size:12px;color:#666}
+.team-directory-table th:first-child{width:58.5%}
+.team-directory-table th:last-child{width:88px}
+.team-directory-table .team-directory-group th{padding:0 8px;width:auto}
+.team-directory-group .button{color:#201f1e;font-weight:600;width:100%;justify-content:flex-start;gap:8px}
+.team-directory-group .button:disabled{opacity:1;cursor:default}
+.team-directory-group .button>span{width:16px}
+.team-directory-table td:first-child{padding-left:56px}
+.team-directory-table td a,.team-directory-table td .button{display:inline-flex;gap:8px;align-items:center;max-width:100%;min-width:0;color:#005a9e}
+.team-directory-table td a span,.team-directory-table td .button span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.team-directory-table td .ui-icon{width:14px;height:14px}
+.team-directory-table td:last-child{white-space:nowrap;padding:4px}
+.team-directory-table td:last-child .button{margin:0}
+.team-directory-table tbody tr:hover .team-board-star,.team-directory-table tbody tr:focus-within .team-board-star{opacity:1}
+.team-directory-filter{padding:0 8px 12px}
+.team-directory-filter label{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #aaa;padding:0 10px}
+.team-directory-filter input{width:100%;border:0;outline:none}
+.team-member-add{display:flex;align-items:end;gap:12px;margin-top:16px}
+.team-member-add .field{flex:1;margin:0}
+.nimbus-team-members>div>.button{margin-left:auto}
+@media(max-width:760px){.team-board-trigger.button{font-size:16px;max-width:230px}.team-board-menu{max-width:calc(100vw - 76px);max-height:calc(100dvh - 200px)}.team-directory-table th:first-child{width:52%}.team-directory-table td:first-child{padding-left:12px}.team-directory-table th,.team-directory-table td{padding:4px 8px}.team-directory-table th:last-child{width:64px}}

@@ -1,0 +1,80 @@
+/* Nimbus Board: measurements from the live page at 100% browser zoom. */
+.azure-shell[data-page=board] main{background:#f8f8f8}
+.azure-shell[data-page=board] .reference-team-header .team-toolbar{height:64px;min-height:64px}
+.azure-shell[data-page=board] .reference-team-navigation{min-height:48px}
+.azure-shell[data-page=board] .team-toolbar>div{gap:12px}
+.azure-shell[data-page=board] .team-toolbar>div>select{padding-left:0;padding-right:24px}
+.nimbus-team-favorite{color:#b57638!important;padding:4px!important;min-width:24px}
+.nimbus-team-favorite[aria-pressed=true] svg{fill:#b57638}
+.azure-shell[data-page=board] .team-toolbar>div>.button{min-height:24px;padding:4px;color:#333}
+.azure-shell[data-page=board] .reference-view-tools{gap:12px}
+.azure-shell[data-page=board] .reference-view-tools>.ui-icon{color:#009ccc;margin-right:-8px;width:16px}
+.azure-shell[data-page=board] .reference-view-tools select{font-size:14px;font-weight:600}
+.azure-shell[data-page=board] .nimbus-board-scroll{background:#fff;margin-left:-16px;padding-right:16px}
+.azure-shell[data-page=board] .nimbus-board-scroll .ado-board{gap:4px;align-items:stretch}
+.azure-shell[data-page=board] .ado-column{background:#f4f4f4;flex:0 0 220px;width:220px;min-width:220px;padding:0}
+.azure-shell[data-page=board] .ado-column.split-column{flex-basis:440px;width:440px;min-width:440px}
+.azure-shell[data-page=board] .ado-column-heading{height:48px;min-height:48px;padding:12px 16px;border-bottom:2px solid #dadada;background:#fff;position:sticky;top:0;z-index:3}
+.azure-shell[data-page=board] .ado-column-heading h3{font:400 15px/20px "Segoe UI",sans-serif}
+.azure-shell[data-page=board] .ado-column-heading .wip{font:400 18px/24px "Segoe UI",sans-serif;display:flex;align-items:baseline;gap:0;color:#107c10}
+.azure-shell[data-page=board] .ado-column-heading .wip small{font:400 12px/16px "Segoe UI",sans-serif;color:#201f1e}
+.azure-shell[data-page=board] .ado-column-heading .wip.over{color:#e81123;background:none;font-weight:400}
+.ado-column-heading>.button{margin-left:auto;padding:0!important;min-height:24px;min-width:16px}
+.azure-shell[data-page=board] .board-drop-zone{padding:0 8px 8px;display:flex;flex-direction:column;gap:0;min-height:calc(100vh - 266px)}
+.azure-shell[data-page=board] .nimbus-card{width:204px;max-width:100%;flex-shrink:0;padding:12px;border:1px solid #ccc;border-left-width:4px;border-radius:3px;margin:8px 0 0;position:relative;font:400 12px/16px "Segoe UI",sans-serif;box-shadow:0 3.2px 7.2px #00000022,0 .6px 1.8px #0000001c}
+.nimbus-card .card-top:empty{display:none}
+.azure-shell[data-page=board] .nimbus-card .card-title{font:400 12px/16px "Segoe UI",sans-serif;text-align:left;margin:0;padding:0;min-height:0}
+.azure-shell[data-page=board] .nimbus-card .card-title .type-icon{width:14px;height:16px;margin-right:8px}
+.azure-shell[data-page=board] .nimbus-card .card-title .card-id{margin-right:8px;font-weight:600}
+.azure-shell[data-page=board] .nimbus-card .card-state{height:24px;min-height:24px;margin:4px 0 0;display:flex;align-items:center;line-height:16px}
+.azure-shell[data-page=board] .nimbus-card .card-state>.button{font:400 12px/16px "Segoe UI",sans-serif;padding:0;min-height:20px;color:#333;white-space:nowrap}
+.azure-shell[data-page=board] .nimbus-card .card-state .state-dot{margin-right:4px;width:8px;height:8px}
+.azure-shell[data-page=board] .nimbus-card .card-bottom{height:32px;min-height:32px;margin:0;display:flex;align-items:center}
+.azure-shell[data-page=board] .nimbus-card .person{display:flex;align-items:center;gap:4px;padding:0;min-height:24px;font:400 12px/16px "Segoe UI",sans-serif;color:#333;max-width:100%}
+.nimbus-card .person>span:last-child{overflow:hidden;text-overflow:ellipsis}
+.azure-shell[data-page=board] .nimbus-card .avatar{width:20px;height:20px;font-size:8px;flex-shrink:0}
+.nimbus-card .nimbus-card-menu{position:absolute;right:2px;top:2px;z-index:2}
+.nimbus-card-menu>summary{display:flex;align-items:center;justify-content:center;width:24px;height:24px;padding:4px;background:#eff6fc;opacity:0;list-style:none}
+.nimbus-card-menu>summary::-webkit-details-marker{display:none}
+.nimbus-card:is(:hover,:focus-within) .nimbus-card-menu>summary,.nimbus-card-menu[open]>summary{opacity:1}
+.nimbus-card-menu[open]{z-index:5}
+.nimbus-card-menu>div{min-width:235px}.nimbus-card-menu .button{display:flex;align-items:center;gap:10px;width:100%;white-space:nowrap}
+.nimbus-annotations{display:flex;align-items:center;gap:8px;margin:8px 0 0;min-height:24px}
+.azure-shell[data-page=board] .nimbus-annotations>.button{display:flex;gap:4px;align-items:center;font:400 12px/16px "Segoe UI",sans-serif;min-height:24px;padding:0;color:#333;border:0}
+.nimbus-annotations>.button[aria-expanded=true]{background:#deecf9}
+.nimbus-annotations .type-icon{width:14px;height:16px}
+.nimbus-annotation-details>.button{font:400 12px/16px "Segoe UI",sans-serif;display:inline-flex;align-items:center;gap:8px;padding:3px 6px;min-height:24px;background:#eaeaea;margin:4px 0}
+.nimbus-child-row{display:flex;align-items:center;gap:4px;height:25px;min-width:0}
+.nimbus-child-row>input[type=checkbox]{width:16px;height:16px;margin:0;flex:none;accent-color:#0078d4}
+.nimbus-child-row>.type-icon{width:14px;height:16px;flex:none}
+.azure-shell[data-page=board] .nimbus-child-row>.avatar,.nimbus-empty-avatar{height:16px;width:16px;flex:none;font-size:7px}
+.azure-shell[data-page=board] .nimbus-child-title{min-width:0;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0;font:400 12px/16px "Segoe UI",sans-serif;min-height:20px;text-align:left;color:#333}
+.nimbus-child-title:hover{text-decoration:underline}
+.nimbus-incoming{display:flex;align-items:center;justify-content:space-between;margin:8px 0;min-height:24px}
+.azure-shell[data-page=board] .nimbus-incoming .button{opacity:1;display:inline-flex;align-items:center;gap:8px;padding:3px 6px;background:#eaeaea;min-height:24px;font:600 13px/18px "Segoe UI",sans-serif;color:#201f1e;margin:0}
+.nimbus-incoming .ui-icon{width:12px;height:12px}
+.nimbus-incoming>.button:last-child{padding:4px!important}
+.azure-shell[data-page=board] .ado-column.nimbus-column-collapsed{width:40px;min-width:40px;flex-basis:40px}
+.nimbus-column-collapsed .ado-column-heading{height:auto!important;padding:12px 8px!important;flex-direction:column-reverse;gap:12px}
+.nimbus-column-collapsed h3{writing-mode:vertical-rl}
+.nimbus-column-collapsed .subcolumns{display:none!important}
+.nimbus-card [hidden]{display:none!important}
+.nimbus-card select[data-nimbus-edit]{width:100%;font-size:12px;height:26px;min-height:26px;padding:2px}
+.nimbus-effort{display:flex;justify-content:space-between;margin:4px 0}
+.nimbus-team-members>div{display:flex;align-items:center;gap:8px;padding:8px;border-bottom:1px solid #eee}.nimbus-team-members small{margin-left:auto;color:#666}
+.azure-shell[data-page=board] .subcolumns{padding:0}
+.azure-shell[data-page=board] .nimbus-annotations{min-height:18px;height:18px}
+.azure-shell[data-page=board] .nimbus-annotations>.button{min-height:18px;height:18px}
+.azure-shell[data-page=board] .nimbus-card .type-icon.task .ui-icon{color:#f2cb1d}
+.azure-shell[data-page=board] .nimbus-card .type-icon.bug .ui-icon{color:#e52d50}
+.azure-shell[data-page=board] .nimbus-card .type-icon.pbi .ui-icon{color:#009ccc}
+.azure-shell[data-page=board] .nimbus-card .type-icon.feature .ui-icon{color:#773b93}
+.azure-shell[data-page=board] .reference-team-header .ui-icon{color:#333}
+.azure-shell[data-page=board] .reference-team-header .nimbus-team-favorite .ui-icon{color:#b57638}
+.azure-shell[data-page=board] .reference-view-tools>.ui-icon{color:#009ccc}
+.azure-shell[data-page=board] .nimbus-board-scroll{max-width:none;width:calc(100% + 48px)}
+.azure-shell[data-page=board] .nimbus-incoming .quick-add{min-height:24px!important;margin:0!important;padding:3px 6px!important}
+.azure-shell[data-page=board] .nimbus-card input[data-nimbus-edit]{width:100%;font:400 12px/16px "Segoe UI",sans-serif;padding:2px;min-height:24px}
+.azure-shell.nimbus-fullscreen>.topbar,.azure-shell.nimbus-fullscreen>.sidebar,.azure-shell.nimbus-fullscreen>.workspace-notice{display:none!important}
+.azure-shell[data-page=board].nimbus-fullscreen main{margin:0;max-width:100%;height:100vh;min-height:0}
+.azure-shell[data-page=board] .ado-column-heading>.button .ui-icon{color:#333}

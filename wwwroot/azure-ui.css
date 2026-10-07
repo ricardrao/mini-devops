@@ -1,0 +1,344 @@
+/* Shared Azure Boards presentation; measured desktop geometry is defined below. */
+:root{--top:48px;--sidebar:48px;--line:#e5e5e5;--muted:#666;color:#201f1e;font-size:13px;font-family:"Segoe UI",Arial,"Microsoft YaHei",sans-serif}
+.ui-icon{width:16px;height:16px;display:inline-block;flex:none;vertical-align:middle;pointer-events:none}
+.button,input,select,textarea{border-radius:2px;font-weight:400}
+.button{min-height:32px;font-size:13px;padding:5px 10px;gap:8px}
+.button.quiet:hover{background:#eaeaea}
+.button .ui-icon{color:#0078d4}
+.azure-shell{--sidebar:48px;min-height:100vh;display:flow-root}
+.azure-shell.nav-expanded{--sidebar:220px}
+.topbar{height:48px;box-shadow:none;z-index:30;border-color:#e2e2e2}
+.brand{width:48px;padding:12px;gap:0;letter-spacing:0}
+.brand img{width:24px;height:24px}
+.breadcrumbs{padding-left:11px;gap:17px;font-size:13px;color:#666;white-space:nowrap;overflow:hidden}
+.breadcrumbs a,.breadcrumbs b,.breadcrumbs .breadcrumb-area{color:#666;font-weight:400}
+.breadcrumbs>span{color:#aaa}
+.breadcrumbs select{border:0;background:transparent;color:#666;padding:4px 2px;max-width:230px;font-size:13px;field-sizing:content;width:auto;flex:0 1 auto}
+.top-user{padding-right:12px;gap:7px}
+.top-user .button{min-width:28px;padding:5px;border:0}
+.top-user .ui-icon{color:#333;width:14px;height:14px}
+.top-user [data-action=focus-search]{justify-content:start;border:1px solid #8a8886;width:200px;height:30px;min-height:30px;color:#666;margin-right:5px}
+.top-user .avatar{width:32px;height:32px;background:#b4009e;color:#fff;font-size:11px;font-weight:400}
+.sidebar{width:var(--sidebar);top:48px;padding:0;background:#ebebeb;border-right:1px solid #d7d7d7;z-index:25;overflow:visible}
+.rail-project{height:48px;display:flex;align-items:center;gap:13px;padding:0 12px;color:#333;overflow:hidden;white-space:nowrap}
+.rail-project>span{background:#b40000;color:white;border-radius:3px;min-width:24px;height:24px;text-align:center;font-size:14px;line-height:24px}
+.rail-project b{font-weight:600;font-size:14px;display:none}
+.sidebar>[data-action=new-project]{min-height:40px;border:0;padding:8px 15px;justify-content:flex-start;overflow:hidden}
+.sidebar>[data-action=new-project] .ui-icon{color:#444}
+.sidebar>[data-action=new-project]>span{display:none}
+.rail-separator{height:1px;background:#d5d5d5;margin:0 10px 4px}
+.nav-item{height:48px;width:100%;padding:0 10px;border-left:3px solid transparent;gap:12px;position:relative;color:#333;font-size:14px}
+.nav-item:hover{background:#dadada}
+.nav-item.selected{background:#d7d7d7;color:#201f1e;border-left-color:#0078d4;font-weight:400}
+.nav-label{display:none;white-space:nowrap}
+.nav-expanded .nav-label,.nav-expanded .rail-project b,.nav-expanded .sidebar>[data-action=new-project]>span{display:inline}
+.nav-expanded .nav-item{padding-left:12px}
+.rail-bottom{margin-top:auto;border-top:1px solid #d5d5d5;margin-left:10px;margin-right:10px}
+.rail-bottom .nav-item{border:0;height:48px;padding:0 5px;gap:13px}
+.rail-bottom .button{padding:0 5px;width:100%;height:48px;justify-content:flex-start;overflow:hidden;border:0}
+.rail-bottom .button>span{display:none}
+.rail-bottom .ui-icon{width:14px;height:14px;color:#333}
+.nav-expanded .rail-bottom .button>span{display:inline}
+.product-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;position:relative;border-radius:3px;background:linear-gradient(135deg,#37baff,#0867d3);color:#fff;flex:none;box-shadow:inset -5px -4px 0 #0000000d}
+.product-icon:before{content:"";position:absolute;left:-2px;top:6px;width:11px;height:17px;background:#ffffff38;border-radius:2px}
+.product-icon .ui-icon{width:17px;height:17px;position:relative;stroke-width:1.25}
+.product-board{background:linear-gradient(135deg,#77ce8b,#199860)}
+.product-backlog{background:linear-gradient(135deg,#ff894b,#ef3d36)}
+.product-sprints{background:linear-gradient(135deg,#999aff,#5751d8)}
+.product-queries{background:linear-gradient(135deg,#36b9d4,#0879b5)}
+main{margin:48px 0 0 var(--sidebar);padding:0 20px;min-height:calc(100vh - 48px);max-width:calc(100% - var(--sidebar))}
+.page-heading{height:64px;min-height:64px;margin:0;gap:12px}
+.page-heading h1{font-size:18px;line-height:24px;font-weight:400;letter-spacing:0;margin:0}
+.heading-actions .button{font-size:13px}
+.commandbar{height:44px;min-height:44px;padding:0 0 6px;gap:12px;justify-content:flex-start;align-items:center;flex-wrap:nowrap;border-bottom:1px solid #e5e5e5}
+.view-picker{gap:10px;flex:none;align-self:stretch}
+.view-picker select{font-size:14px;font-weight:600;width:146px;max-width:180px;padding:4px 18px 4px 0;appearance:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23666' d='m2 4 4 4 4-4'/%3E%3C/svg%3E") no-repeat right center}
+.divider{height:24px;margin:0 2px;background:#ccc}
+.commands{gap:9px;flex-wrap:nowrap;align-items:center;min-width:0}
+.commands .button{font-size:13px;color:#333;min-height:32px;padding:5px 6px;gap:8px;font-weight:400}
+.commands .ui-icon{width:17px;height:17px}
+.command-options{display:flex;align-items:center;gap:6px;margin-left:auto;flex:none}
+.command-options>.button{padding:5px 6px;min-width:29px;border:0}
+.overflow-menu{position:relative}
+.overflow-menu summary{list-style:none;cursor:pointer;width:28px;height:30px;display:flex;align-items:center;justify-content:center;color:#0078d4}
+.overflow-menu summary::-webkit-details-marker{display:none}
+.overflow-menu[open]>summary,.overflow-menu summary:hover{background:#eaeaea}
+.overflow-menu>div{position:absolute;right:0;top:34px;z-index:35;width:195px;background:#fff;box-shadow:0 3px 10px #0003;border:1px solid #ddd;padding:5px 0;display:flex;flex-direction:column}
+.overflow-menu>div>.button{justify-content:flex-start;border:0;border-radius:0;width:100%;padding:8px 14px}
+.filterbar{background:#f0f0f0;margin:8px 0 8px;min-height:50px;padding:8px 12px 8px 20px;gap:12px;border-radius:3px;flex-wrap:wrap}
+.filterbar>.search-icon{display:flex;align-items:center;width:14px;color:#666;font-size:13px}
+.search-icon .ui-icon{width:14px;height:14px}
+.filterbar>input{font-size:13px;padding:6px 0;min-width:160px;flex:1}
+.filterbar input::placeholder{color:#666;opacity:1}
+.filter-selects{gap:10px;margin-left:auto;flex:none;width:auto;border:0;padding:0;flex-wrap:nowrap}
+.filter-selects select{appearance:none;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23666' d='m2 4 4 4 4-4'/%3E%3C/svg%3E") no-repeat right 4px center;font-size:13px;padding:5px 22px 5px 5px;max-width:165px;min-width:72px;color:#666}
+.filter-selects .button{padding:4px 7px;min-height:28px;margin-left:8px}
+.filter-selects .button .ui-icon{color:#333;width:14px;height:14px}
+.text-filter{display:flex;align-items:center;width:67px;gap:1px}
+.text-filter .small-filter{width:47px;padding:5px 3px;background:transparent;border:0;font-size:13px}
+.text-filter .ui-icon{width:12px;height:12px;color:#777}
+.advanced-filters{flex-basis:100%;display:flex;gap:15px;align-items:center;flex-wrap:wrap;border-top:1px solid #ddd;padding-top:8px}
+.advanced-filters select{font-size:13px;background:transparent;max-width:230px;border:0}
+.advanced-filters .completed-toggle{font-size:12px;margin:0}
+.azure-shell[data-page=workitems] #page-content{display:flex;flex-direction:column;height:calc(100vh - 112px);min-height:300px}
+.azure-shell[data-page=workitems] .table-wrap{flex:1;min-height:100px;overflow:auto;margin:0 -8px 0 0;padding-right:2px}
+.work-table{font-size:13px;table-layout:auto;width:100%;text-align:left}
+.work-table th{height:35px;padding:0 8px;border:0;font-weight:400;font-size:12px;color:#201f1e;position:sticky;top:0;background:white;z-index:2}
+.work-table td{height:40px;padding:5px 8px;border:0;font-size:13px;color:#201f1e;line-height:20px}
+.work-table .selection-cell{width:36px;min-width:36px;padding:0 8px!important}
+.selection-cell input{appearance:none;border:1px solid transparent;border-radius:50%;width:17px;height:17px;padding:0;position:relative;cursor:pointer;background:transparent}
+.work-table thead .selection-cell input,.work-table tr:hover .selection-cell input,.work-table tr:focus-within .selection-cell input{border-color:#aaa}
+.selection-cell input:checked{border:2px solid white!important;background:#0078d4}
+.selection-cell input:checked:after{content:"";position:absolute;left:3px;top:2px;width:4px;height:7px;border:solid #fff;border-width:0 1.5px 1.5px 0;transform:rotate(45deg)}
+.work-table .id-cell{width:76px;min-width:76px;color:#201f1e;font-size:13px}
+.work-table .title-cell{min-width:400px;width:32%;padding-left:0;padding-right:8px}
+.row-title{display:flex;align-items:center;gap:8px}
+.row-title .item-title{flex:1;min-width:0}
+.item-title{font-size:13px;line-height:20px;color:#201f1e;font-weight:400;padding:0;gap:8px;max-width:none}
+.row-more{visibility:hidden;height:32px;min-width:32px;min-height:32px;padding:6px;border:0;margin-left:auto}
+.row-more .ui-icon{color:#555}
+.work-table tr.selected-row .row-more,.work-table tr:hover .row-more,.work-table tr:focus-within .row-more{visibility:visible}
+.work-table tbody tr:hover{background:#f3f3f3}
+.work-table tbody tr.selected-row,.work-table tbody tr:focus{background:#deecf9;outline:none}
+.work-table tbody tr.selected-row .item-title,.work-table tbody tr:hover .item-title{color:#0078d4}
+.work-table .state-cell{width:120px;min-width:120px;font-size:13px}
+.state-dot{width:8px;height:8px;margin-right:5px;background:#b2b2b2;vertical-align:0}
+.state-dot.active{background:#007acc}
+.state-dot.done{background:#339933}
+.state-dot.resolved{background:#fff;border:1px solid #b2b2b2}
+.state-dot.in-review{background:#5688e0}
+.state-dot.bug-progress{background:#fbe74b}
+.type-icon{width:14px;height:16px;font-size:14px}
+.type-icon .ui-icon{width:14px;height:16px}
+.type-icon.epic{color:#773b93}.type-icon.feature{color:#773b93}.type-icon.pbi{color:#009ccc}.type-icon.task{color:#eac900}.type-icon.bug{color:#e52d50}
+.col-area{min-width:285px;width:27%}
+.area-text{max-width:none;color:#201f1e}
+.col-tags{min-width:160px;width:13%}
+.col-comments{min-width:85px;width:85px}
+.col-changed{min-width:200px;width:200px}
+.tags{max-width:210px;gap:5px;flex-wrap:nowrap}
+.tag{background:#deecf9;color:#444;border-radius:12px;font-size:11px;padding:1px 9px;line-height:20px;max-width:170px}
+.date{font-size:13px;color:#333}
+.comment-count{color:#333;display:inline-flex;align-items:center;gap:5px}
+.comment-count .ui-icon{width:16px;height:16px}
+.sort{font-size:12px;font-weight:400;display:flex;align-items:center;gap:20px;width:100%;text-align:left}
+.sort-direction{margin-left:auto;color:#666;font-size:15px}
+.results-footer{min-height:34px;height:34px;padding:3px 0;border-top:1px solid #eee;flex:none;font-size:11px;color:#777}
+.results-footer>.muted{display:none}
+.results-footer .button{min-height:24px;border:0;font-size:11px;padding:2px 7px}
+.workitem-row-menu{position:fixed;inset:auto;margin:0;padding:8px 0;width:max-content;min-width:244px;max-width:calc(100vw - 16px);max-height:calc(100vh - 16px);overflow:auto;border:0;border-radius:4px;background:#fff;color:#201f1e;box-shadow:0 3px 12px #0003;z-index:1000}
+.workitem-row-menu::backdrop{background:transparent;pointer-events:none}
+.workitem-row-menu>[role=menuitem]{display:flex;align-items:center;justify-content:flex-start;gap:12px;width:100%;height:32px;min-height:32px;padding:0 12px;border:0;border-radius:0;background:#fff;font-size:14px;font-weight:400;white-space:nowrap;color:#201f1e;text-decoration:none}
+.workitem-row-menu>[role=menuitem]:hover,.workitem-row-menu>[role=menuitem]:focus{background:#f3f2f1;outline:0}
+.workitem-row-menu>[role=menuitem]:focus-visible{box-shadow:inset 0 0 0 1px #0078d4}
+.workitem-row-menu>[role=menuitem] .ui-icon{width:16px;height:16px;color:#333}
+.workitem-row-menu>[role=menuitem]:disabled{color:#a19f9d;opacity:1;cursor:default}
+/* Team pages use the same chrome, with narrow columns and compact cards. */
+.azure-shell[data-page=board] .page-heading{display:none}
+.azure-shell[data-page=board] main{padding-top:22px}
+.team-toolbar{min-height:48px;gap:10px}
+.team-toolbar select{font-size:19px;font-weight:600;color:#201f1e;max-width:320px}
+.team-toolbar select[name=level]{font-size:13px;font-weight:400}
+.ado-tabs{gap:22px;margin:0 0 10px}
+.ado-tabs .button{font-size:13px;padding:9px 0;color:#201f1e}
+.ado-tabs .selected{color:#201f1e;font-weight:400}
+.azure-shell[data-page=board] .filterbar{min-height:40px;margin:6px 0;padding-top:4px;padding-bottom:4px}
+.ado-board-scroll{max-height:calc(100vh - 212px);min-height:400px;margin:0 -12px 0 -8px;padding-right:4px;padding-bottom:4px}
+.swimlane{min-width:100%}
+.swimlane:only-child>.lane-title{display:none}
+.lane-title{background:#fff;border-bottom:1px solid #ddd;margin:8px 0;font-size:13px;padding:9px 8px}
+.ado-board{gap:12px;align-items:stretch}
+.ado-column{width:212px;min-width:212px;border-radius:0;background:#f4f4f4;border-top:0;min-height:calc(100vh - 218px);padding:0}
+.ado-column.split-column{width:436px}
+.ado-column-heading{background:#fff;border-bottom:2px solid #dadada;margin:0;padding:12px 8px;height:44px;align-items:center}
+.ado-column-heading h3{font-size:15px;font-weight:400;color:#201f1e}
+.ado-column-heading .wip{font-size:14px;color:#107c10}
+.ado-column-heading .wip.over{color:#e81123;background:none;padding:0}
+.subcolumns{padding:8px}
+.board-drop-zone{padding:0;min-height:200px}
+.subheading{font-size:12px;color:#666;padding:3px 0 9px}
+.advanced-card{padding:10px 12px;margin-bottom:8px;background:white;border:1px solid #ccc;border-left:4px solid #00a4cc;border-radius:3px;box-shadow:0 2px 4px #0003}
+.work-card:hover{box-shadow:0 2px 5px #0004}
+.advanced-card .card-top{display:inline-flex;margin:0 5px 4px 0;font-size:12px;gap:6px;color:#201f1e}
+.advanced-card .card-title{font-size:12px;line-height:16px;margin:0 0 8px;color:#201f1e;font-weight:400}
+.advanced-card .card-state{font-size:12px;margin:0 0 9px;color:#201f1e}
+.advanced-card .card-bottom{margin:8px 0 0;font-size:12px;color:#201f1e}
+.advanced-card .avatar{width:20px;height:20px;font-size:10px}
+.advanced-card .estimate{font-size:11px;border-radius:0;background:#f0f0f0}
+.quick-add{font-size:12px!important;color:#201f1e!important;background:#e7e7e7!important;min-height:26px!important;margin:0 0 8px!important;padding:3px 7px!important;width:auto!important}
+.board-drop-zone{display:flex;flex-direction:column}
+.board-drop-zone>.quick-add{order:-1;align-self:flex-start}
+.backlog-layout{gap:12px}.backlog-table td{height:32px}.backlog-table .item-title{font-size:13px}
+.planning-pane{background:#fafafa;border-left:1px solid #ddd;padding:12px}
+.iteration-drop{border-radius:0;border-color:#ddd;background:#fff}
+.taskboard td{background:#f4f4f4;padding:8px;min-width:212px;width:212px}
+.taskboard thead th{background:#fff;font-size:14px;font-weight:400}
+.query-scope{border:0;border-radius:0;margin:0 0 18px}
+.query-scope>summary{padding:10px 8px;border-bottom:1px solid #ddd;background:#f3f3f3;color:#201f1e;font-size:14px}
+.query-folder{padding:8px 15px}.query-folder h3{color:#333;font-size:13px}
+.query-commandbar{margin:0 0 12px;gap:6px}.query-commandbar .primary{background:#fff;color:#333;border-color:transparent}
+.analytics-card{border-radius:0;box-shadow:none}
+/* Work item details occupy the application content area, like Azure's editor. */
+dialog{border-radius:0;box-shadow:0 6px 24px #0003;border:1px solid #ddd}
+dialog::backdrop{backdrop-filter:none;background:#0005}
+dialog.work-item-dialog{position:fixed;inset:48px 0 0 48px;margin:0;width:auto;max-width:none;height:calc(100vh - 48px);max-height:none;border:0;box-shadow:none;background:#fff;overflow:hidden}
+dialog.work-item-dialog{z-index:21}
+body:has(.nav-expanded) dialog.work-item-dialog{left:220px}
+.work-item-dialog #modal-form{height:100%;max-height:none}
+.work-item-dialog .modal-heading{padding:5px 12px 0 18px;height:30px;min-height:30px;border:0;border-left:5px solid #009ccc}
+.work-item-dialog[data-item-type=task] .modal-heading{border-left-color:#eac900}.work-item-dialog[data-item-type=bug] .modal-heading{border-left-color:#e52d50}.work-item-dialog[data-item-type=feature] .modal-heading,.work-item-dialog[data-item-type=epic] .modal-heading{border-left-color:#773b93}
+.item-type-heading{font-size:11px!important;color:#0078d4!important;text-transform:uppercase;gap:5px!important}
+.work-item-dialog .close-button{font-size:20px;height:25px;min-height:25px;padding:0 5px}
+.detail-content{padding:0 12px;display:flex;flex-direction:column;min-height:0}
+.detail-content>*{flex-shrink:0}
+.editor-title{display:flex;align-items:center;gap:16px;min-height:40px;padding:0 5px}
+.editor-id{font-size:18px;font-weight:400;color:#201f1e;flex:none}
+.work-item-dialog .editor-title input{font-size:18px;font-weight:400;margin:0;padding:4px 0;min-height:34px;border-color:transparent;border-radius:0}
+.detail-commandbar{display:flex;align-items:center;gap:12px;padding:3px 8px 9px;min-height:44px}
+.detail-owner{display:block;margin:0;max-width:260px;min-width:190px}
+.detail-owner>span{display:none}
+.detail-owner select{border-color:transparent;padding:5px 4px;color:#201f1e;font-size:13px}
+.detail-commandbar .item-actions{margin:0 0 0 auto;gap:5px}
+.item-actions .button{font-size:13px;min-height:32px;padding:5px 8px}
+.detail-commandbar>.primary{min-height:32px;padding:5px 12px;font-size:13px}
+.detail-commandbar>.primary .ui-icon{color:white}
+.work-item-dialog .editor-meta{order:0;justify-content:flex-end;margin:0;padding:5px 8px;background:#f8f8f8;min-height:23px;font-size:11px;color:#777}
+.work-item-dialog .editor-meta>span:first-child{margin-right:auto}
+.work-item-dialog .ado-item-meta{display:grid;grid-template-columns:270px minmax(300px,1fr);grid-template-rows:30px 30px;gap:4px 18px;background:#f8f8f8;border:0;border-radius:0;padding:6px 16px 14px;margin:0 -12px;min-height:84px}
+.ado-item-meta .field{display:grid;grid-template-columns:75px minmax(0,1fr);gap:9px;align-items:center;margin:0}
+.ado-item-meta .field>span{font-size:11px;color:#777;font-weight:400}
+.ado-item-meta input,.ado-item-meta select{background:transparent;border:1px solid transparent;font-size:13px;min-height:26px;padding:3px 4px;height:28px;color:#201f1e}
+.ado-item-meta input:hover,.ado-item-meta select:hover{border-color:#ccc;background:#fff}
+.work-item-dialog .editor-tabs{margin:0 -12px 14px;justify-content:flex-end;background:#f8f8f8;border-bottom:1px solid #eee;padding:0 10px;gap:0;min-height:35px}
+.work-item-dialog .editor-tabs>button{font-size:13px;color:#201f1e;padding:7px 10px;border-left:1px solid #ddd;margin:0}
+.work-item-dialog .editor-tabs>button.selected{font-weight:400;color:#201f1e}
+.work-item-dialog .editor-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(220px,1fr) minmax(220px,1fr);gap:16px;padding:0 0 20px}
+.work-item-dialog .editor-fields{border:0;padding:0}
+.work-item-dialog .editor-fields .field{margin:0 8px 14px;gap:3px}
+.work-item-dialog .editor-fields .field>span{font-size:11px;color:#777;font-weight:400}
+.work-item-dialog .editor-fields input,.work-item-dialog .editor-fields select{min-height:27px;height:28px;font-size:13px;padding:3px 5px;border-color:transparent;border-radius:0}
+.work-item-dialog .editor-fields input:hover,.work-item-dialog .editor-fields select:hover{border-color:#bbb}
+.work-item-dialog .section-label{font-size:15px;font-weight:600;border-top:0;border-bottom:1px solid #e5e5e5;color:#201f1e;padding:5px 0 12px;margin:0 0 15px}
+.editor-related .field>span{font-size:11px;color:#777;font-weight:400}
+.editor-related input{border-color:transparent;font-size:13px;padding:4px 5px}
+.editor-related .section-label:not(:first-child){margin-top:26px}
+.editor-related .link-row{border:0;margin:6px 0;padding:0;font-size:12px;align-items:flex-start}
+.editor-related .link-row .button{font-size:12px;color:#0078d4;line-height:18px}
+.related-shortcuts{display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.related-shortcuts>.button{font-size:13px;color:#0078d4}
+.work-item-dialog .editor-main .field{margin-bottom:26px;gap:0}
+.work-item-dialog .editor-main .field>span{font-size:15px;font-weight:600;border-bottom:1px solid #e5e5e5;padding:5px 0 12px;color:#201f1e}
+.work-item-dialog .editor-main textarea{border:1px solid transparent;border-radius:0;font-size:13px;padding:10px 12px;line-height:1.6;min-height:105px}
+.work-item-dialog .editor-main textarea[name=description]{height:135px}
+.work-item-dialog .editor-main textarea[name=acceptance]{height:100px}
+.work-item-dialog .editor-main textarea[name=comment]{min-height:65px;height:65px;border:1px solid #ddd;margin-top:6px}
+.work-item-dialog .editor-main textarea:hover,.work-item-dialog .editor-main textarea:focus{border-color:#bbb}
+.work-item-dialog .markdown-toolbar{background:#fff;border:0;border-radius:0;padding:2px 6px;min-height:26px;margin:0;opacity:.65}
+.work-item-dialog .markdown-toolbar .button{font-size:11px;min-height:24px}
+.work-item-dialog .markdown-toolbar:hover{opacity:1;background:#f5f5f5}
+.work-item-dialog .discussion-item{border:1px solid #eee;box-shadow:0 2px 4px #0002;border-radius:3px;padding:18px;margin:16px 0}
+.work-item-dialog .discussion-item p{font-size:13px;line-height:1.6}
+.work-item-dialog .detail-footer{padding:6px 16px;min-height:42px;background:#fff}
+.work-item-dialog .detail-footer .button{font-size:12px;min-height:28px}
+@media(min-width:1800px){.work-table .title-cell{min-width:450px}.col-area{min-width:420px}.work-table td{height:40px}main{padding-left:20px;padding-right:20px}}
+@media(max-width:1250px){.commands{gap:2px}.commands .button{font-size:12px;gap:5px;padding:5px}.command-options{gap:0}.view-picker select{width:136px}.breadcrumbs{gap:10px}.top-user [data-action=focus-search]{width:150px}.work-item-dialog .editor-grid{grid-template-columns:minmax(0,1.7fr) minmax(200px,1fr)}.editor-related{grid-column:2}.work-item-dialog .ado-item-meta{grid-template-columns:240px 1fr}.detail-commandbar{flex-wrap:wrap}.detail-owner{min-width:140px}.item-actions .button{font-size:12px}}
+@media(max-width:950px){.commandbar{height:auto;min-height:44px;flex-wrap:wrap;gap:3px}.commandbar>.commands{order:3;width:100%;overflow:auto;flex:none;padding-bottom:3px}.command-options{margin-left:auto}.filter-selects{gap:3px}.top-user [data-action=focus-search]{width:32px}.top-user [data-action=focus-search]>span{display:none}.breadcrumbs .breadcrumb-area,.breadcrumbs>span:nth-last-of-type(1){display:none}.filterbar>input{flex-basis:40%;min-width:130px}.work-item-dialog .editor-grid{grid-template-columns:minmax(0,1.6fr) minmax(180px,1fr)}.detail-commandbar .item-actions{margin-left:0}.work-item-dialog .editor-tabs{justify-content:flex-start;overflow:auto}.advanced-filters{gap:6px}}
+@media(max-width:760px){:root{--top:48px;--sidebar:48px}.azure-shell,.azure-shell.nav-expanded{--sidebar:48px}.nav-expanded .sidebar{width:220px;box-shadow:3px 0 12px #0002}.brand{width:48px;padding:12px}.breadcrumbs{font-size:12px;padding-left:4px;gap:6px}.breadcrumbs>a:not(.breadcrumb-current),.breadcrumbs>span:first-of-type,.breadcrumbs .breadcrumb-area{display:none}.breadcrumbs select{max-width:115px;font-size:12px}.breadcrumbs b{font-size:12px}.top-user{gap:2px;padding-right:5px}.top-user [data-action=refresh]{display:none}.top-user .avatar{width:26px;height:26px}.top-user .button{min-width:26px;padding:4px}.sidebar{padding-top:0}.nav-item{font-size:13px;padding:0 10px;height:48px}.nav-label{display:none}.rail-bottom{display:block}.rail-project{display:flex}.sidebar>[data-action=new-project]{display:flex}main{margin-top:48px;padding:0 12px;max-width:calc(100% - 48px)}.page-heading{height:56px;min-height:56px;margin:0}.page-heading h1{font-size:18px}.azure-shell[data-page=workitems] #page-content{height:calc(100vh - 104px)}.filterbar{padding:6px 10px;gap:6px}.filterbar>input{flex-basis:75%;font-size:13px}.filter-selects{width:100%;justify-content:flex-start;overflow:auto;gap:3px;margin:0}.filter-selects select{font-size:12px;min-width:66px;max-width:120px}.filter-selects .text-filter{width:57px}.text-filter .small-filter{font-size:12px;width:39px}.filter-selects .button{margin-left:0;padding:4px}.commands .button{font-size:12px;flex:none}.results-footer>span{font-size:10px}.results-footer .button{font-size:10px;padding:3px}.team-toolbar select{font-size:17px;max-width:180px}.team-toolbar select[name=level]{font-size:12px;max-width:130px}.ado-column{width:212px;min-width:212px}.ado-board-scroll{max-height:calc(100vh - 260px)}dialog.work-item-dialog,body:has(.nav-expanded) dialog.work-item-dialog{inset:48px 0 0 48px;max-width:none;width:calc(100vw - 48px)}.detail-content{padding:0 10px}.work-item-dialog .editor-title input,.editor-id{font-size:16px}.editor-title{gap:8px}.detail-commandbar{padding:3px 0 8px;gap:6px}.detail-owner{min-width:100px;max-width:150px}.detail-commandbar .item-actions{order:3;width:100%;overflow:auto;flex-wrap:nowrap}.detail-commandbar .item-actions .button{font-size:11px;flex:none}.detail-commandbar>.primary{margin-left:auto;font-size:11px}.work-item-dialog .ado-item-meta{grid-template-columns:1fr;grid-template-rows:auto;padding:8px 10px;gap:3px}.ado-item-meta .field{grid-template-columns:65px minmax(0,1fr)}.work-item-dialog .editor-meta{flex-wrap:wrap;justify-content:flex-start;gap:3px}.work-item-dialog .editor-tabs>button{font-size:12px;padding:8px}.work-item-dialog .editor-grid{display:flex;flex-direction:column;gap:12px}.work-item-dialog .editor-fields{display:block}.work-item-dialog .editor-fields .field{margin:0 0 12px}.editor-related{grid-column:auto}.work-item-dialog .detail-footer{padding:5px 10px}.work-item-dialog .editor-main textarea{padding:8px}.work-item-dialog .editor-main .field{margin-bottom:15px}.work-item-dialog .section-label{margin-top:12px}}
+
+/* Measured against Azure Work items, 2048 × 1030, 100% browser zoom.
+   Header 48, notice 54, page heading 58, commands 41, filter 50, rows 40.
+   Fixed data columns prevent short local sample text from changing alignment. */
+:root{font-size:14px}
+.azure-shell{--notice:54px}
+.azure-shell.notice-dismissed{--notice:0px}
+.azure-shell main{margin-top:calc(48px + var(--notice));min-height:calc(100vh - 48px - var(--notice));padding-left:20px;padding-right:20px}
+.workspace-notice{position:fixed;left:var(--sidebar);right:0;top:48px;height:54px;z-index:20;background:#fcf2ec;display:flex;align-items:center;gap:18px;padding:7px 16px 7px 24px;color:#201f1e;font-size:14px;line-height:20px}
+.workspace-notice>p{margin:0;flex:1;min-width:0}
+.workspace-notice strong{font-weight:400}
+.workspace-notice>a,.workspace-notice a{color:#0078d4;text-decoration:underline}
+.workspace-notice>.ui-icon{width:14px;height:14px;color:#b88630}
+.workspace-notice>.button{border:0;padding:4px;min-width:24px}
+.workspace-notice>.button .ui-icon{color:#333}
+.notice-dismissed .workspace-notice{display:none}
+.azure-shell .page-heading{height:58px;min-height:58px}
+.azure-shell[data-page=workitems] #page-content{height:calc(100vh - 48px - var(--notice) - 58px)}
+.azure-shell[data-page=workitems] .commandbar{height:41px;min-height:41px;padding-bottom:6px;gap:12px}
+.azure-shell[data-page=workitems] .commands{gap:9px}
+.azure-shell[data-page=workitems] .commands .button{font-size:14px;padding:5px 6px;gap:8px}
+.azure-shell[data-page=workitems] .view-picker{gap:8px}
+.azure-shell[data-page=workitems] .view-picker select{width:126px;font-size:14px}
+.azure-shell[data-page=workitems] .filterbar{flex:none;min-height:50px;margin:8px 0;padding:8px 12px 8px 20px}
+.azure-shell[data-page=workitems] .filterbar>input{font-size:14px}
+.azure-shell[data-page=workitems] .filter-selects select,.azure-shell[data-page=workitems] .text-filter input{font-size:14px}
+.azure-shell[data-page=workitems] .filter-selects{gap:10px}
+.azure-shell[data-page=workitems] .table-wrap{margin-right:-8px;padding-right:0;scrollbar-gutter:stable}
+.azure-shell[data-page=workitems] .work-table{table-layout:fixed;min-width:1678px;border-collapse:collapse;width:100%}
+.azure-shell[data-page=workitems] .work-table th{height:36px;padding:0 8px;font-size:12px;font-weight:400}
+.azure-shell[data-page=workitems] .work-table td{height:40px;padding:4px 8px;font-size:14px;line-height:20px}
+.azure-shell[data-page=workitems] .work-table .selection-cell{width:40px;min-width:0;padding:0 10px!important}
+.azure-shell[data-page=workitems] .selection-cell input{display:block;width:18px;height:18px;margin:0 auto}
+.azure-shell[data-page=workitems] .work-table .id-cell{width:76px;min-width:0;font-size:14px}
+.azure-shell[data-page=workitems] .work-table th.id-cell{font-size:12px}
+.azure-shell[data-page=workitems] .work-table .title-cell{width:466px;min-width:0;padding-left:8px;padding-right:8px}
+.azure-shell[data-page=workitems] .work-table .state-cell{width:116px;min-width:0;font-size:14px}
+.azure-shell[data-page=workitems] .work-table th.state-cell{font-size:12px}
+.azure-shell[data-page=workitems] .work-table .col-area{width:491px;min-width:0}
+.azure-shell[data-page=workitems] .work-table .col-tags{width:216px;min-width:0}
+.azure-shell[data-page=workitems] .work-table .col-comments{width:91px;min-width:0}
+.azure-shell[data-page=workitems] .work-table .col-changed{width:166px;min-width:0}
+.azure-shell[data-page=workitems] .work-table .col-spacer{width:auto;min-width:0;padding:0}
+.azure-shell[data-page=workitems] .work-table .col-assignee{width:170px}.azure-shell[data-page=workitems] .work-table .col-type{width:160px}.azure-shell[data-page=workitems] .work-table .col-priority{width:80px}.azure-shell[data-page=workitems] .work-table .col-iteration{width:180px}.azure-shell[data-page=workitems] .work-table .col-remaining{width:125px}.azure-shell[data-page=workitems] .work-table .col-target{width:130px}
+.azure-shell[data-page=workitems] .item-title{font-size:14px;line-height:20px;gap:8px}
+.azure-shell[data-page=workitems] .row-title{gap:4px;height:32px}
+.azure-shell[data-page=workitems] .row-more{flex:none;width:32px;margin:0;background:#ffffff80}
+.azure-shell[data-page=workitems] .area-text{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.azure-shell[data-page=workitems] .date{font-size:14px;white-space:nowrap}
+.azure-shell[data-page=workitems] .tag{font-size:12px;line-height:20px;padding:1px 9px}
+.azure-shell[data-page=workitems] .state-dot{width:8px;height:8px}
+.azure-shell[data-page=workitems] .item-title .type-icon,.azure-shell[data-page=workitems] .item-title .ui-icon{width:14px;height:16px}
+.azure-shell[data-page=workitems] .work-table thead .selection-cell input:not(:checked){border-color:transparent}
+.azure-shell[data-page=workitems] .work-table thead:hover .selection-cell input:not(:checked){border-color:#aaa}
+.new-item-command{display:flex;align-items:center;gap:0;flex:none}
+.new-item-command>.button{padding-right:2px!important}
+.new-item-menu>summary{width:22px;color:#666}
+.new-item-menu>div{left:0;right:auto;width:215px}
+.new-item-menu>div>.button{font-size:14px}
+.topbar .breadcrumbs,.topbar .breadcrumbs select{font-size:14px}
+.top-user [data-action=focus-search]{font-size:14px}
+.top-user .global-search{display:flex;align-items:center;width:200px;height:32px;border:1px solid #8a8886;background:#fff;margin-right:5px;flex:none}
+.top-user .global-search:focus-within{border-color:#0078d4;outline:1px solid #0078d4}
+.top-user .global-search [data-action=focus-search]{border:0;margin:0;width:30px;min-width:30px;height:28px;min-height:28px;padding:6px;justify-content:center}
+.global-search input{padding:4px 4px 4px 0;border:0;outline:none;background:transparent;width:100%;min-width:0;font-size:14px;height:28px}
+.global-search input:focus{outline:none;border:0}
+@media(max-width:1250px){.top-user .global-search{width:150px}}
+@media(max-width:950px){.top-user .global-search{width:32px}.global-search input{width:0;padding:0;opacity:0}.top-user .global-search:focus-within{position:absolute;right:48px;width:min(280px,calc(100vw - 104px));z-index:1}.global-search:focus-within input{width:100%;padding:4px;opacity:1}}
+.top-user .user-menu>summary{height:32px;width:32px}
+.top-user .user-menu>div{top:39px;width:220px}
+.top-user .user-menu>div .button{padding:8px 14px;font-size:14px}
+.account-name{margin:6px 14px 10px;color:#555;font-size:14px}
+.brand img{width:24px;height:22px}
+.azure-product-icon{width:24px;height:24px;flex:none;display:block}
+.product-icon{box-shadow:none}
+.sidebar .nav-item{padding-left:9px;gap:12px;background-color:transparent}
+.sidebar .nav-item.selected{background:#d8d8d8;border-left-color:#0078d4}
+.sidebar button.nav-item{font:inherit;border-top:0;border-right:0;border-bottom:0;text-align:left;cursor:pointer}
+.sidebar .nav-item:hover{background:#dedede}
+.sidebar nav{overflow-y:auto;overflow-x:hidden;scrollbar-width:none;flex:1;min-height:0;padding-bottom:12px}
+.sidebar .rail-bottom{flex:none}
+.sidebar .external-product>.ui-icon{width:20px;height:20px;margin-left:2px}
+.sidebar .external-product[aria-label^="Areas"]{height:40px}
+.boards-flyout{display:none;position:fixed;left:var(--sidebar);top:189px;width:218px;padding:8px 0;background:#fff;box-shadow:2px 3px 10px #0003;border:1px solid #ddd;z-index:50;color:#333}
+.boards-flyout h2{font-size:16px;margin:6px 16px 10px;font-weight:600}
+.boards-navigation:hover .boards-flyout,.boards-navigation:focus-within .boards-flyout,.boards-navigation.open .boards-flyout{display:block}
+.board-nav-link{display:flex;align-items:center;gap:10px;padding:10px 18px;color:#333;font-size:14px}
+.board-nav-link:hover{background:#f0f0f0}.board-nav-link.selected{background:#e5f1fb;color:#0078d4}
+.board-nav-link .ui-icon{color:#777}
+.nav-expanded .sidebar .nav-item{padding-left:10px}
+.azure-shell:not(.notice-dismissed)~dialog.work-item-dialog,body:has(.azure-shell:not(.notice-dismissed)) dialog.work-item-dialog{top:102px;height:calc(100vh - 102px)}
+body:has(.azure-shell.notice-dismissed) dialog.work-item-dialog{top:48px;height:calc(100vh - 48px)}
+.azure-shell[data-page=board] .ado-board-scroll{max-height:calc(100vh - 212px - var(--notice));min-height:300px}
+.azure-shell[data-page=board] .ado-column{min-height:calc(100vh - 228px - var(--notice))}
+@media(max-width:1100px){.azure-shell[data-page=workitems] .commandbar{height:auto;min-height:41px;flex-wrap:wrap}.azure-shell[data-page=workitems] .commandbar>.commands{order:3;width:100%;overflow:auto;flex:none;padding-bottom:3px}.azure-shell[data-page=workitems] .commands{gap:7px}.workspace-notice{font-size:12px;line-height:17px;gap:10px;padding:6px 10px}.workspace-notice br{display:none}.workspace-notice>p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.workspace-notice:focus-within{height:auto;min-height:54px}.workspace-notice:focus-within>p{display:block}.top-user>[data-action=show-help],.top-user>[data-action=project-settings],.top-user>a{display:none}}
+@media(max-width:760px){.azure-shell main{padding:0 12px}.azure-shell .page-heading{height:56px;min-height:56px}.azure-shell[data-page=workitems] #page-content{height:calc(100vh - 48px - var(--notice) - 56px)}.azure-shell[data-page=workitems] .commandbar{gap:0}.azure-shell[data-page=workitems] .commands .button{font-size:12px}.azure-shell[data-page=workitems] .filterbar{padding:6px 10px}.azure-shell[data-page=workitems] .filter-selects{gap:2px}.azure-shell[data-page=workitems] .filter-selects select,.azure-shell[data-page=workitems] .text-filter input{font-size:12px}.topbar .breadcrumbs select{font-size:12px}.workspace-notice{left:48px}.workspace-notice>p{font-size:11px;line-height:16px}.workspace-notice>.ui-icon{display:none}.boards-flyout{left:48px;top:189px}.nav-expanded .boards-flyout{left:48px;top:236px}.sidebar nav{padding-bottom:0}.sidebar .external-product{height:40px}.nav-expanded .workspace-notice{left:48px}}
+
+.breadcrumbs a:hover,.breadcrumbs a:focus-visible{color:#0078d4;text-decoration:underline}

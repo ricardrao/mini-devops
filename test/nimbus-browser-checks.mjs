@@ -1,0 +1,48 @@
+import assert from 'node:assert/strict';
+export async function nimbusBrowser({evaluate,click,fill,submit,until,shot}){
+  await evaluate("openItem(null,{type:'Bug',state:'In Progress'})");
+  await until(()=>evaluate('!!document.querySelector(".state-control .state-dot")'),'state marker');
+  const color=()=>evaluate('getComputedStyle(document.querySelector(".state-control .state-dot")).backgroundColor');
+  assert.equal(await color(),'rgb(251, 231, 75)','Bug In Progress uses the Vienna yellow');
+  await fill('#dialog [name=type]','Task');
+  assert.equal(await color(),'rgb(0, 122, 204)','changing type recolors the same In Progress state');
+  await fill('#dialog [name=state]','Done');assert.equal(await color(),'rgb(51, 153, 51)');
+  await fill('#dialog [name=type]','Product Backlog Item');
+  await fill('#dialog [name=state]','Committed');assert.equal(await color(),'rgb(0, 122, 204)');
+  await evaluate('closeDialog(true)');
+  const ids=await evaluate(`(async()=>{
+    const base='/projects/'+state.project;
+    const p=await api(base+'/items',{method:'POST',body:{title:'Nimbus card annotations',type:'Product Backlog Item'}});
+    const add=(type,status)=>api(base+'/items',{method:'POST',body:{title:type+' child '+status,type,state:status,parent_id:p.id,assignee_id:state.user.id}});
+    const task=await add('Task','To Do');await add('Task','Done');await add('Task','Removed');await add('Bug','New');
+    go('board',{level:'backlog',team_id:state.meta.teams[0].id});return {parent:p.id,task:task.id};
+  })()`);
+  const root=`.nimbus-card[data-drag="${ids.parent}"]`;
+  await until(()=>evaluate(`!!document.querySelector('${root} .nimbus-annotations')`),'typed card annotations');
+  assert.deepEqual(await evaluate(`[...document.querySelectorAll('${root} .nimbus-annotations button')].map(b=>b.textContent)`),['1/2','0/1']);
+  assert.equal(await evaluate(`document.querySelector('${root} .nimbus-annotation-details').hidden`),true);
+  assert.equal(await evaluate(`!!document.querySelector('${root} .card-bottom')`),false,'unassigned cards have no empty person row');
+  await click(`${root} [data-action=nimbus-annotation][data-type=Task]`);
+  await until(()=>evaluate(`document.querySelectorAll('${root} .nimbus-child-row').length===2`),'task-only expansion');
+  await shot('nimbus-typed-annotation.png');
+  await click(`[data-nimbus-child="${ids.task}"]`);
+  await until(()=>evaluate(`document.querySelector('${root} .nimbus-annotations [data-type=Task]').textContent==='2/2'`),'child completion persisted');
+  assert.equal(await evaluate(`api('/items/${ids.task}').then(r=>r.item.state)`),'Done');
+  await click(`${root} [data-action=nimbus-annotation][data-type=Bug]`);
+  await until(()=>evaluate(`document.querySelectorAll('${root} .nimbus-child-row').length===1`),'separate bug expansion');
+  await click('[data-action=nimbus-compact]');await until(()=>evaluate(`document.querySelector('${root} .nimbus-card-fields')?.hidden`),'collapse card fields');
+  await click('[data-action=nimbus-compact]');await until(()=>evaluate(`document.querySelector('${root} .nimbus-card-fields')?.hidden===false`),'expand card fields');
+  await click('[data-action=nimbus-collapse-column][data-column=new]');await until(()=>evaluate('!!document.querySelector("[data-nimbus-column=new].nimbus-column-collapsed")'),'collapse incoming column');
+  await click('[data-action=nimbus-collapse-column][data-column=new]');await until(()=>evaluate('!!document.querySelector("[data-nimbus-column=new]:not(.nimbus-column-collapsed)")'),'expand incoming column');
+  await click(`${root} [data-action=nimbus-edit-field][data-field=state]`);await fill('[data-nimbus-edit]','Active');
+  await until(()=>evaluate(`state.items.find(i=>i.id===${ids.parent})?.state==='Active' && !!document.querySelector('${root}')`),'inline state update');
+  await click(`${root} .nimbus-card-menu summary`);await click(`${root} [data-action=nimbus-title]`);await fill('[data-nimbus-edit]','Nimbus title edited');
+  await until(()=>evaluate(`state.items.find(i=>i.id===${ids.parent})?.title==='Nimbus title edited' && !!document.querySelector('${root}')`),'inline title edit');
+  await click(`${root} .nimbus-card-menu summary`);await click(`${root} [data-action=nimbus-move-column]`);await fill('#dialog [name=column]','approved');await submit('#modal-form');
+  await until(()=>evaluate(`!dialog.open && !!document.querySelector('[data-board-drop=approved] ${root}')`),'move to column');
+  await click('[data-action=nimbus-team-favorite]');await until(()=>evaluate('document.querySelector("[data-action=nimbus-team-favorite]").getAttribute("aria-pressed")=="true"'),'persist favorite');assert.equal(await evaluate('document.querySelector("[data-action=nimbus-team-favorite]").getAttribute("aria-pressed")'),'true');
+  await click('[data-action=nimbus-team-profile]');await until(()=>evaluate('!!document.querySelector(".nimbus-team-members")'),'team profile');await click('[data-action=close-dialog]');
+  await click('[data-action=nimbus-fullscreen]');assert.equal(await evaluate('getComputedStyle(document.querySelector(".topbar")).display'),'none');
+  await evaluate('document.body.dispatchEvent(new KeyboardEvent("keydown",{key:"Escape",bubbles:true}))');assert.equal(await evaluate('!!document.querySelector(".nimbus-fullscreen")'),false);
+  await shot('nimbus-board-aligned.png');
+}

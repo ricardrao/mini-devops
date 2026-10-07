@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+export async function rowMenuBrowser({evaluate,click,until,shot}) {
+ const ids=await evaluate(`(async()=>{const base='/projects/'+state.project+'/items';const a=await api(base,{method:'POST',body:{title:'Row menu alpha',type:'Task'}});const b=await api(base,{method:'POST',body:{title:'Row menu beta',type:'Task'}});go('workitems',{view:'all',q:'Row menu'});return[a.id,b.id];})()`);
+ const trigger=`[data-action=row-actions][data-id="${ids[0]}"]`;
+ await until(()=>evaluate(`!!document.querySelector('${trigger}')`),'row actions');
+ await click(trigger);
+ assert.equal(await evaluate('dialog.open'),false,'row actions are not a modal');
+ assert.deepEqual(await evaluate('[...document.querySelectorAll("#workitem-row-menu [role=menuitem]")].map(e=>e.textContent)'),['Open selected items in Queries','Copy to clipboard','Email...','Delete']);
+ const bounds=await evaluate(`(()=>{const m=document.querySelector('#workitem-row-menu').getBoundingClientRect(),b=document.querySelector('${trigger}').getBoundingClientRect();return {height:m.height,left:m.left,top:m.top,buttonLeft:b.left,buttonBottom:b.bottom,right:m.right,viewport:innerWidth}})()`);
+ assert.equal(bounds.height,144);assert.ok(Math.abs(bounds.top-bounds.buttonBottom)<1);assert.ok(bounds.right<=bounds.viewport);
+ await shot('workitems-row-menu.png');
+ assert.ok(await evaluate('document.querySelector("#workitem-row-menu a").href.includes("mailto:?subject=Row%20menu%20alpha")'));
+ await evaluate('document.activeElement.dispatchEvent(new KeyboardEvent("keydown",{key:"ArrowDown",bubbles:true}))');
+ assert.equal(await evaluate('document.activeElement.dataset.action'),'row-copy-selection');
+ await evaluate('document.activeElement.dispatchEvent(new KeyboardEvent("keydown",{key:"Escape",bubbles:true}))');
+ assert.equal(await evaluate('document.activeElement.dataset.action'),'row-actions');
+ assert.equal(await evaluate('!!document.querySelector("#workitem-row-menu")'),false);
+ await click(trigger);await click(trigger);assert.equal(await evaluate('!!document.querySelector("#workitem-row-menu")'),false);
+ await click(trigger);await evaluate('document.body.dispatchEvent(new PointerEvent("pointerdown",{bubbles:true}))');assert.equal(await evaluate('!!document.querySelector("#workitem-row-menu")'),false);
+ await evaluate('Object.defineProperty(navigator,"clipboard",{configurable:true,value:{writeText:async text=>{window.rowCopied=text}}})');
+ await click(trigger);await click('[data-action=row-copy-selection]');await until(()=>evaluate('!!window.rowCopied'),'copy');assert.ok((await evaluate('window.rowCopied')).includes('Row menu alpha'));assert.ok((await evaluate('window.rowCopied')).includes('item='+ids[0]));await evaluate('delete navigator.clipboard');
+ for(const id of ids)if(!await evaluate(`document.querySelector('[data-select-item="${id}"]').checked`))await click(`[data-select-item="${id}"]`);
+ await click(trigger);await click('[data-action=row-query]');
+ await until(()=>evaluate('document.querySelectorAll(".advanced-query-results tbody tr").length===2'),'selected items open in Queries');
+ assert.deepEqual((await evaluate('state.items.map(i=>i.id)')).sort((a,b)=>a-b),ids);
+ await evaluate("go('workitems',{view:'all',q:'Row menu'})");await until(()=>evaluate(`!!document.querySelector('${trigger}')`),'return to rows');
+ await evaluate('window.rowOriginalConfirm=window.confirm;window.confirm=()=>true');await click(trigger);await click('[data-action=row-delete]');
+ await until(()=>evaluate(`!state.items.some(i=>i.id===${ids[0]}) && !document.querySelector('${trigger}')`),'delete from row menu');await evaluate('window.confirm=window.rowOriginalConfirm');
+ assert.equal(await evaluate(`api('/items/${ids[0]}').then(r=>r.item.deleted)`),1);
+}
