@@ -1,0 +1,5 @@
+.fluent-auth form > .fui-Field { margin: 16px 0; }
+.fluent-auth .fui-Input { min-height: 36px; }
+.fluent-auth .fui-Input input { border: 0; box-shadow: none; min-width: 0; background: transparent; }
+.fluent-auth .auth-submit { width: 100%; min-height: 40px; margin-top: 24px; gap: 8px; }
+#auth-root:empty { display: none; }

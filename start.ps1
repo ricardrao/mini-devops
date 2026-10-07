@@ -1,9 +1,9 @@
 param([int]$Port = 3220)
-$ErrorActionPreference = 'Stop'
-Set-Location -LiteralPath $PSScriptRoot
-$portable = Join-Path $PSScriptRoot '..\mini-icm\.runtime\dotnet\dotnet.exe'
-$dotnet = if ($env:DEVOPS_DOTNET) { $env:DEVOPS_DOTNET } elseif (Test-Path -LiteralPath $portable) { (Resolve-Path -LiteralPath $portable).Path } else { 'dotnet' }
+. (Join-Path $PSScriptRoot 'scripts/toolchain.ps1')
+Set-Location -LiteralPath $ProjectRoot
+& (Join-Path $PSScriptRoot 'scripts/build.ps1')
 $env:DEVOPS_URL = "http://127.0.0.1:$Port"
+$env:DEVOPS_CONTENT_ROOT = $ProjectRoot
 Write-Host "Mini DevOps: http://localhost:$Port"
-& $dotnet run --project MiniDevOps.csproj
+& $Dotnet backend/MiniDevOps.Api/bin/Debug/net10.0/MiniDevOps.dll
 exit $LASTEXITCODE

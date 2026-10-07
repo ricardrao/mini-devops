@@ -1,18 +1,30 @@
 # Mini DevOps
 
-独立运行的团队工作管理应用，使用 **C# / ASP.NET Core 10 + MySQL 8.0**，浏览器界面使用 HTML/CSS/JavaScript。2.0 参考了实际 Azure Boards 的工作项、看板、Backlogs、Sprints、Capacity、Analytics 和 Queries 页面；数据、账号和工作流程由本地应用管理。参考过程和差异见 [AZURE_BOARDS_REFERENCE.md](AZURE_BOARDS_REFERENCE.md)。
+独立运行的团队工作管理应用，后端使用 **C# / ASP.NET Core 10 + MySQL / SQLite**，前端工程使用 **React / TypeScript / Fluent UI / Vite**。登录与首次设置已使用 React，已有业务页面通过兼容层保留。界面参考 Azure Boards 的工作项、看板、Backlogs、Sprints、Capacity、Analytics 和 Queries 页面；数据、账号和工作流程由本地应用管理。目录与迁移边界见 [架构说明](docs/architecture.md)，界面对照见 [参考记录](docs/AZURE_BOARDS_REFERENCE.md)。
 
 ## 启动
 
-Windows 双击 `start.cmd`，访问 **http://localhost:3220**。首次打开时创建管理员账号，可选择添加示例数据。没有默认账号或密码。
+安装 [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) 和 [Node.js 24+](https://nodejs.org/)。Windows 双击 `start.cmd` 会构建前后端并启动，访问 **http://localhost:3220**。首次打开时创建管理员账号，可选择添加示例数据。没有默认账号或密码。
 
-脚本优先使用相邻 Mini ICM 的本机 .NET SDK，其他机器安装 [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0) 后运行：
+跨平台构建和运行：
 
 ```sh
-dotnet run --project MiniDevOps.csproj
+npm ci --prefix frontend
+npm run build --prefix frontend
+dotnet build MiniDevOps.slnx
+dotnet backend/MiniDevOps.Api/bin/Debug/net10.0/MiniDevOps.dll
 ```
 
-指定 Windows 端口：`start.cmd -Port 3221`。运行时不需要 Node.js，也不依赖 Azure DevOps 账号或内部服务。
+独立开发时，在两个终端分别运行：
+
+```sh
+# 后端 API（3220）
+dotnet run --project backend/MiniDevOps.Api/MiniDevOps.csproj
+# 前端开发服务器（5173，代理 /api 到后端）
+npm run dev --prefix frontend
+```
+
+开发时访问 **http://127.0.0.1:5173**。发布后的运行环境只需要 .NET，Node.js 用于前端构建和测试。应用不依赖 Azure DevOps 账号或内部服务。Windows 启动端口可通过 `start.cmd -Port 3221` 修改。
 
 ## 数据库
 
@@ -53,7 +65,7 @@ Sprints 的“连续创建周迭代”支持预览并创建 1–26 个连续七�
 
 界面按实际 Azure Work items 的尺寸配置窄图标导航、工具栏、固定列宽和 14px 正文。绿色 Boards 菜单包含本地 Work items、Boards、Backlogs、Sprints 和 Queries。左下角可展开导航；列表右上角提供更多筛选、全屏及更多操作。工作项在全宽编辑页打开，按描述、规划字段和关联工作分栏。
 
-顶部可关闭的通知明确标为 Azure DevOps 组织通知并链接回原站，不适用于本地账号。产品图标来自原站的公开静态资源，来源保存在 `wwwroot/assets/azure/sources.json`。尺寸对照见 [VISUAL_COMPARISON.md](VISUAL_COMPARISON.md)。
+顶部可关闭的通知明确标为 Azure DevOps 组织通知并链接回原站，不适用于本地账号。产品图标来自原站的公开静态资源，来源保存在 `frontend/public/assets/azure/sources.json`。尺寸对照见 [VISUAL_COMPARISON.md](docs/VISUAL_COMPARISON.md)。
 
 - 本地账号登录、修改密码、管理员创建账号；项目编辑者与只读成员权限。
 - 多项目、项目成员管理；普通成员只可访问加入的项目。
@@ -81,7 +93,9 @@ Sprints 的“连续创建周迭代”支持预览并创建 1–26 个连续七�
 ## 部署
 
 ```sh
-dotnet publish MiniDevOps.csproj -c Release -o publish
+npm ci --prefix frontend
+npm run build --prefix frontend
+dotnet publish backend/MiniDevOps.Api/MiniDevOps.csproj -c Release -o publish
 cd publish
 dotnet MiniDevOps.dll
 ```
@@ -93,13 +107,15 @@ dotnet MiniDevOps.dll
 ## 开发与验证
 
 ```sh
-dotnet build MiniDevOps.csproj
-node --test test/api.test.mjs test/boards.test.mjs test/migration.test.mjs
+npm run build --prefix frontend
+dotnet build MiniDevOps.slnx
+node --test test/*.test.mjs
+node test/frontend-dev.mjs
 node test/browser.mjs
 ```
 
-测试需要 Node.js 24+，仅用作测试工具。浏览器测试默认使用 Windows Edge，可通过 `DEVOPS_BROWSER` 指定 Chromium 路径，通过 `DEVOPS_DOTNET` 指定 .NET 主程序。截图写入 `test-results/`。
+测试需要 Node.js 24+。浏览器测试默认使用 Windows Edge，可通过 `DEVOPS_BROWSER` 指定 Chromium 路径，通过 `DEVOPS_DOTNET` 指定 .NET 主程序。截图写入 `test-results/`。
 
 MySQL 测试要求为 `api.test.mjs`、`boards.test.mjs` **分别提供全新、专用的测试数据库**，通过 `DEVOPS_TEST_MYSQL` 提供连接字符串并逐个运行；测试会在该库建立测试账号与工作项，不能使用正式数据库。迁移测试使用独立 SQLite v1 固定数据集。
 
-代码入口：`Program.cs`（服务与请求校验）、`Store.cs` / `BoardsMigration.cs`（数据库和升级）、`Api.cs`（账号和工作项）、`Boards.cs`（看板和团队）、`Planning.cs`（迭代规划）、`Queries.cs`（查询）、`WorkItems.cs`（工作项扩展操作）、`wwwroot/`（界面）。验证记录见 [VERIFICATION.md](VERIFICATION.md)。
+代码入口：`backend/MiniDevOps.Api/Program.cs`（服务启动）、`Hosting/`（请求校验与静态托管）、`Data/`（数据库和迁移）、`Features/`（业务模块），以及 `frontend/src/`（前端）。`wwwroot` 只用于后端构建和发布产物，不再保存前端源码。验证记录见 [VERIFICATION.md](docs/VERIFICATION.md)。

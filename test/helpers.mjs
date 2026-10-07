@@ -8,7 +8,7 @@ export const dotnet = process.env.DEVOPS_DOTNET || (existsSync(path.resolve(root
 export async function start(options = {}) {
   const directory = options.directory || mkdtempSync(path.join(os.tmpdir(), 'mini-devops-test-'));
   const processEnv = { ...process.env, DEVOPS_DB_PROVIDER: 'sqlite', DEVOPS_DB_PATH: path.join(directory, 'devops.db'), DEVOPS_URL: 'http://127.0.0.1:0', DEVOPS_SETUP_TOKEN: 'test-setup-token', ...options.env };
-  const child = spawn(dotnet, ['bin/Debug/net10.0/MiniDevOps.dll'], { cwd: root, env: processEnv, windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'] });
+  const child = spawn(dotnet, ['backend/MiniDevOps.Api/bin/Debug/net10.0/MiniDevOps.dll'], { cwd: root, env: processEnv, windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'] });
   let logs = ''; child.stdout.on('data', b => logs += b); child.stderr.on('data', b => logs += b);
   const deadline = Date.now() + 20000;
   while (Date.now() < deadline) {

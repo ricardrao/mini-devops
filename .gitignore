@@ -1,7 +1,7 @@
 bin/
 obj/
 .runtime/
-data/
+/data/
 test-results/
 .env
 .env.*
@@ -18,3 +18,6 @@ test-results/
 *.key
 .vs/
 publish/
+node_modules/
+dist/
+/wwwroot/

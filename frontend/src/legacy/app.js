@@ -20,21 +20,19 @@ const select = (name, options, attrs = '') => `<select name="${name}" ${attrs}>$
 const writable = () => state.meta?.role !== 'reader';
 function toast(message) { $('#toast').textContent = message; $('#toast').classList.add('visible'); clearTimeout(toast.timer); toast.timer = setTimeout(() => $('#toast').classList.remove('visible'), 5000); }
 async function api(path, options = {}) {
-  const headers = { ...options.headers };
-  if (options.body !== undefined) { headers['Content-Type'] = 'application/json'; options.body = JSON.stringify(options.body); }
-  if (options.method && options.method !== 'GET') headers['X-CSRF-Token'] = state.csrf;
-  const response = await fetch('/api' + path, { ...options, headers }); const data = await response.json();
-  if (!response.ok) { if (response.status === 401 && state.user) { state.user = null; closeDialog(true); await auth(); } throw Error(data.error || '请求失败'); }
-  return data;
+  try { return await window.MiniDevOpsHttp.request(path, options, state.csrf); }
+  catch (error) { if (error.status === 401 && state.user) { state.user = null; closeDialog(true); await auth(); } throw error; }
 }
+
 function pref(key, fallback) { try { return JSON.parse(localStorage.getItem(`devops:${state.user.id}:${key}`)) ?? fallback; } catch { return fallback; } }
 function savePref(key, value) { try { localStorage.setItem(`devops:${state.user.id}:${key}`, JSON.stringify(value)); } catch { /* Preferences are optional. */ } }
 function route() { return new URL(location.hash.slice(1) || '/workitems', location.origin); }
 function go(page = state.page, filters = state.filters) { const query = new URLSearchParams({ project: state.project, ...filters }); const next = `#/${page}?${query}`; if (location.hash === next) render(); else location.hash = next; }
 async function auth() {
-  const setup = await api('/setup'); document.title = 'Mini DevOps · 登录';
-  app.innerHTML = `<div class="auth-page"><div class="auth-story"><img src="/icon.svg" width="48" height="48" alt=""><div class="wordmark">Mini DevOps</div><h1>把想法，<br>一步步变成成果。</h1><p>规划工作，保持专注。<br>让团队在同一个看板上协作。</p><div class="auth-preview"><span>待办</span><span>进行中</span><span>已完成</span><i></i><i></i><i></i><i></i></div><small>BOARDS · BACKLOGS · SPRINTS</small></div><div class="auth-form-wrap"><form id="auth-form" data-setup="${setup.required}"><div class="overline">你的团队工作空间</div><h2>${setup.required ? '开始使用 Mini DevOps' : '欢迎回来'}</h2><p class="muted">${setup.required ? '创建管理员账号，开启第一个项目。' : '登录以继续处理你的工作。'}</p><div class="form-error" role="alert"></div>${setup.required ? field('姓名', input('name', '', 'required maxlength="100" autocomplete="name"')) : ''}${field('账号', input('login', '', 'required minlength="3" maxlength="100" autocomplete="username"'))}${field('密码', input('password', '', `type="password" required ${setup.required ? 'minlength="12"' : ''} maxlength="128" autocomplete="${setup.required ? 'new-password' : 'current-password'}"`))}${setup.required ? `<p class="hint">密码至少 12 个字符。</p>${field('远程设置令牌（本机可留空）', input('setupToken', '', 'autocomplete="off"'))}<label class="check"><input type="checkbox" name="demo" checked> 添加示例工作项</label>` : ''}<button class="button primary full" type="submit">${setup.required ? '创建工作空间' : '登录'} <span>→</span></button><p class="hint">${setup.required ? '数据保存在你自己的部署环境中。' : '需要账号？请联系工作空间管理员。'}</p></form></div></div>`;
+  const setup = await api('/setup'); document.title = 'Mini DevOps';
+  window.MiniDevOpsAuth.show(setup);
 }
+
 function shell() {
   document.title = `${names[state.page]} · ${state.meta.project.name} · Mini DevOps`;
   const nav = Object.entries(names).map(([key, label]) => `<a href="#/${key}?project=${state.project}" class="nav-item ${state.page === key ? 'selected' : ''}" ${state.page === key ? 'aria-current="page"' : ''}><span class="nav-icon">${glyphs[key]}</span>${label}${key === 'workitems' ? '<small>WORK</small>' : ''}</a>`).join('');
@@ -212,4 +210,4 @@ document.addEventListener('drop', async event => {
   try { await api(`/items/${item.id}`, { method: 'PATCH', body: { state: next, version: item.version } }); toast(`#${item.id} → ${next}`); await render(); } catch (error) { toast(error.message); await render(); }
 });
 window.addEventListener('hashchange', () => { if (dialog.open && !closeDialog()) { history.replaceState(null, '', state.currentHash || '#'); return; } render(); });
-window.addEventListener('DOMContentLoaded', boot, { once: true });
+// React bootstrap invokes boot after loading the compatibility runtime.
